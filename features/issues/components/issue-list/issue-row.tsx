@@ -17,9 +17,9 @@ const levelColors = {
 };
 
 export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
-  const { name, message, stack, level, numEvents } = issue;
+  const { name, message, stack, level, numEvents, numUsers } = issue;
   const firstLineOfStackTrace = stack.split("\n")[1];
-
+  console.log(issue);
   return (
     <tr className={styles.row}>
       <td className={styles.issueCell}>
@@ -43,7 +43,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
         </Badge>
       </td>
       <td className={styles.cell}>{numEvents}</td>
-      <td className={styles.cell}>{numEvents}</td>
+      <td className={styles.cell}>{numUsers}</td>
     </tr>
   );
 }
