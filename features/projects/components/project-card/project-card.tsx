@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import capitalize from "lodash/capitalize";
 import { Badge, BadgeColor } from "@features/ui";
 import { Routes } from "@config/routes";
 import { ProjectLanguage, ProjectStatus } from "@api/projects.types";
@@ -30,8 +29,9 @@ function statusGo(status: string) {
     case "error":
       return "Critical";
       break;
-    default:
+    case "warning":
       return "Warning";
+      break;
   }
 }
 
