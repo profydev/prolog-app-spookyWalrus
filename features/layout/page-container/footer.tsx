@@ -35,7 +35,12 @@ function Footer() {
             </Button>
           </div>
           <div className={styles.footerLogoWrap}>
-            <Image src={`/icons/logo-small.svg`} alt="prolog logo" />
+            <Image
+              width={23}
+              height={33}
+              src={`/icons/logo-small.svg`}
+              alt="prolog logo"
+            />
           </div>
         </div>
       </div>
