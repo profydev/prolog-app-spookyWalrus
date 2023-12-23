@@ -49,6 +49,13 @@
     line-height: 24px;
   }
 
+  &.default {
+    background-color: transparent;
+    box-shadow: none;
+    border: transparent;
+    color: #fff;
+  }
+
   &.primary {
     border: 1px solid var(--primary-600, #7f56d9);
     background-color: #7f56d9;

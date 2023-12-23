@@ -17,6 +17,7 @@ export enum ButtonColor {
   emptyGray = "emptyGray",
   error = "error",
   emptyError = "emptyError",
+  default = "default",
 }
 
 export enum ButtonState {
@@ -24,12 +25,6 @@ export enum ButtonState {
   hover = "hover",
   focus = "focus",
   disabled = "disabled",
-}
-
-export enum CircleIcon {
-  circleIcon = "circleIcon",
-  circleOne = "circleOne",
-  circleTwo = "circleTwo",
 }
 
 interface Props {
@@ -51,11 +46,12 @@ const Button = ({
   text,
   state = ButtonState.default,
   size = ButtonSize.md,
-  color = ButtonColor.primary,
+  color = ButtonColor.default,
   icon,
   showText,
   showCircle1,
   showCircle2,
+  onClick,
 }: Props) => {
   return (
     <button
@@ -65,6 +61,7 @@ const Button = ({
         styles[size],
         styles[color],
       )}
+      onClick={onClick}
     >
       {showCircle1 && <span className={styles.circleOne}>{icon}</span>}
       {showText && <span className={styles.childText}>{text}</span>}
