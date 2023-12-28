@@ -1,0 +1,126 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+
+.box {
+  display: inline-flex;
+  padding: 10px;
+}
+
+input[type="checkbox"] .check {
+  display: none;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+
+  &.sm {
+    display: flex;
+    padding: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+  }
+
+  &.md {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 6px;
+  }
+
+  &.default {
+    border: 1px solid var(--gray-300, #d0d5dd);
+    background: var(--white, #fff);
+  }
+
+  &.hover {
+    border: 1px solid var(--primary-600, #7f56d9);
+    background: var(--primary-50, #f9f5ff);
+  }
+
+  &.focus {
+    border: 1px solid var(--primary-300, #d6bbfb);
+    background: var(--white, #fff);
+    box-shadow: 0 0 0 4px #f4ebff;
+  }
+
+  &.disabled {
+    border: 1px solid var(--gray-200, #e4e7ec);
+    background: var(--gray-100, #f2f4f7);
+  }
+}
+
+input[type="checkbox"]:checked ~ .icon {
+  background-size: contain;
+  background-image: url("/icons/check-sm.svg");
+
+  &.focus {
+    border: 1px solid var(--primary-600, #7f56d9);
+    background: var(--primary-50, #f9f5ff);
+    box-shadow: 0 0 0 4px #f4ebff;
+
+    &.sm {
+      background-size: contain;
+      background-image: url("/icons/check-sm.svg");
+    }
+
+    &.md {
+      background-size: contain;
+      background-image: url("/icons/check-md.svg");
+    }
+  }
+
+  &.disabled {
+    border: 1px solid var(--gray-200, #e4e7ec);
+    background: var(--gray-100, #f2f4f7);
+    background-size: contain;
+    background-image: url("/icons/disabl-check-sm.svg");
+  }
+}
+
+input[type="checkbox"]:indeterminate ~ .icon {
+  background-size: contain;
+  background-image: url("/icons/minus-sm.svg");
+
+  &.focus {
+    border-radius: 6px;
+    border: 1px solid var(--primary-600, #7f56d9);
+    background: var(--primary-50, #f9f5ff);
+    box-shadow: 0 0 0 4px #f4ebff;
+
+    &.sm {
+      background-size: contain;
+      background-image: url("/icons/minus-sm.svg");
+    }
+
+    &.md {
+      background-size: contain;
+      background-image: url("/icons/minus-md.svg");
+    }
+  }
+
+  &.disabled {
+    border: 1px solid var(--gray-200, #e4e7ec);
+    background: var(--gray-100, #f2f4f7);
+    background-size: contain;
+    background-image: url("/icons/disabl-minus.svg");
+  }
+}
+
+.label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+  color: var(--gray-700, #344054);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
