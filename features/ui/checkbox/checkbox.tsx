@@ -48,6 +48,7 @@ const Checkbox = ({
         ref={ref}
         checked={checked}
         onChange={onChange}
+        className={styles.check}
       ></input>
       <span
         className={classNames(styles.icon, styles[size], styles[color])}
