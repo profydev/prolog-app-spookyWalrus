@@ -11,22 +11,22 @@ import classNames from "classnames";
 import styles from "./select.module.scss";
 import Icon from "./icons/user-select.svg";
 
-export enum Color {
-  empty = "#D0D5DD",
-  filled = "#D0D5DD",
-  // focused = "#D6BBFB",
-  focused = "#0cef6e",
-  disabled = "#D0D5DD",
-  open = "#0fe71a",
-}
+// export enum Color {
+//   empty = "#D0D5DD",
+//   filled = "#D0D5DD",
+//   // focused = "#D6BBFB",
+//   focused = "#0cef6e",
+//   disabled = "#D0D5DD",
+//   open = "#0fe71a",
+// }
 
-export enum BgColor {
-  empty = "#FFF",
-  filled = "#fff",
-  focused = "#fff",
-  disabled = "##F9FAFB",
-  open = "#fff",
-}
+// export enum BgColor {
+//   empty = "#FFF",
+//   filled = "#fff",
+//   focused = "#0c4df0",
+//   disabled = "#0cf0c6",
+//   open = "#fff",
+// }
 
 export enum Shadow {
   focused = "0px 0px 0px 4px #F4EBFF, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
@@ -35,8 +35,8 @@ export enum Shadow {
 interface Props {
   label?: string;
   name?: string;
-  color?: Color;
-  background?: BgColor;
+  // color?: Color;
+  // background?: BgColor;
   children: React.ReactNode;
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
@@ -109,8 +109,6 @@ const CustomSingleValue = (props: CustomSingleValueProps) => {
 
 const CustomSelect = ({
   label,
-  color = Color.empty,
-  background = BgColor.empty,
   onChange,
   showIcon,
   showError,
@@ -130,6 +128,25 @@ const CustomSelect = ({
     }
   };
 
+  const getColorScheme = (state: any) => {
+    switch (true) {
+      case state.isFocused:
+        return {
+          borderColor: "red",
+          backgroundColor: "yellow",
+        };
+      case state.isDisabled:
+        return {
+          borderColor: "blue",
+          backgroundColor: "orange",
+        };
+      default:
+        return {
+          borderColor: "green",
+          backgroundColor: "#fff",
+        };
+    }
+  };
   return (
     <div className={styles.box}>
       <label>
@@ -148,12 +165,11 @@ const CustomSelect = ({
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,
-              borderColor: state.isFocused ? "blue" : "red",
-
-              boxShadow: state.isFocused ? Shadow.focused : Shadow.default,
+              borderColor: getColorScheme(state).borderColor,
+              backgroundColor: getColorScheme(state)?.backgroundColor,
               "&:hover": {
-                borderColor: BgColor.empty,
-                boxShadow: BgColor.empty,
+                borderColor: "none",
+                boxShadow: "none",
               },
               cursor: "not allowed",
               isSearchable: false,

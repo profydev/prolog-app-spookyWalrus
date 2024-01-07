@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import CustomSelect from "./select";
-import { Color, BgColor } from "./select";
+// import { Color, BgColor } from "./select";
 
 const meta: Meta<typeof CustomSelect> = {
   component: CustomSelect,
@@ -39,18 +39,19 @@ Default.args = {
   showIcon: false,
   showError: false,
   hint: "What hint?",
+  label: "The label",
   errorMess: "There's an error",
 };
 
-export const Open = Template.bind({});
-Open.args = {
-  menuIsOpen: false,
+export const Disabled = Template.bind({});
+Disabled.argTypes = {
+  isDisabled: { control: "boolean" },
+};
+Disabled.args = {
+  isDisabled: false,
 };
 
 export const Multi = Template.bind({});
-Multi.argTypes = {
-  color: { options: ["focused", "disabled"] },
-};
 Multi.args = {
   isFocused: false,
 };
