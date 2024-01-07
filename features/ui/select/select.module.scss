@@ -1,0 +1,59 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+
+.box {
+  display: flex;
+  padding: 10px;
+  margin: 10px;
+}
+
+label {
+  display: block;
+  align-self: stretch;
+  color: var(--gray-700, #344054);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.hint {
+  display: block;
+  align-self: stretch;
+  color: var(--gray-500, #727377);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+.hideHint {
+  display: none;
+}
+
+.error {
+  display: block;
+  align-self: stretch;
+  color: var(--error-500, #f04438);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.hideError {
+  display: none;
+}
+.content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: start;
+}
+
+.input {
+  display: none;
+}
