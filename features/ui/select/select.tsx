@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Select, {
   OptionProps,
   SingleValueProps,
-  components,
-  Props as SelectProps,
+  // components,
+  // Props as SelectProps,
 } from "react-select";
-import { CSSObject } from "@emotion/react";
-import { ControlProps } from "react-select/dist/declarations/src/components/Control";
-import classNames from "classnames";
+// import { CSSObject } from "@emotion/react";
+// import { ControlProps } from "react-select/dist/declarations/src/components/Control";
+// import classNames from "classnames";
 import styles from "./select.module.scss";
-import Icon from "./icons/user-select.svg";
+import { AnyPtrRecord } from "dns";
+// import Icon from "./icons/user-select.svg";
 
 // export enum Color {
 //   empty = "#D0D5DD",
@@ -35,8 +36,6 @@ export enum Shadow {
 interface Props {
   label?: string;
   name?: string;
-  // color?: Color;
-  // background?: BgColor;
   children: React.ReactNode;
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
@@ -52,6 +51,7 @@ interface Props {
   isMulti?: boolean;
   menuIsOpen?: boolean;
   hasValue?: boolean;
+  state?: string;
 }
 
 const options = [
@@ -91,14 +91,15 @@ type OptionType = {
   label: string;
   value: string;
   icon: string;
-};
+} | null;
 
-interface CustomSingleValueProps extends SingleValueProps<any, any> {
-  data: OptionType | null;
+interface CustomSingleValueProps extends SingleValueProps<OptionType, boolean> {
+  data: OptionType;
   showIcon: boolean;
 }
 const CustomSingleValue = (props: CustomSingleValueProps) => {
   const { data, ...rest } = props;
+
   return (
     <div className={styles.content} {...rest.innerProps}>
       {props.showIcon && <img src={data?.icon} alt={data?.label} />}
@@ -109,26 +110,20 @@ const CustomSingleValue = (props: CustomSingleValueProps) => {
 
 const CustomSelect = ({
   label,
-  onChange,
+  // onChange,
   showIcon,
   showError,
   hint,
   errorMess,
+  state,
 }: Props) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [colorChoice, setColorChoice] = useState(null);
-
-  const handleSelectChange = (newValue: any, actionMeta: any) => {
-    if (newValue.hasOwnProperty("icon")) {
-      setSelectedOption(newValue);
-      console.log(actionMeta);
-    } else {
-      setColorChoice(newValue);
-      console.log("color: ", newValue);
-    }
+  const handleSelectChange = (newValue: any) => {
+    setSelectedOption(newValue);
+    console.log(newValue);
   };
 
-  const getColorScheme = (state: any) => {
+  const getColorScheme = (state: Props) => {
     switch (true) {
       case state.isFocused:
         return {
@@ -147,6 +142,7 @@ const CustomSelect = ({
         };
     }
   };
+
   return (
     <div className={styles.box}>
       <label>

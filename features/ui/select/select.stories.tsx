@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { useState } from "react";
+// import { useState } from "react";
 import CustomSelect from "./select";
 // import { Color, BgColor } from "./select";
 
@@ -55,3 +55,4 @@ export const Multi = Template.bind({});
 Multi.args = {
   isFocused: false,
 };
+//option
