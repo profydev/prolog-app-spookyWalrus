@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import Select, {
-  OptionProps,
-  SingleValueProps,
-  // components,
-} from "react-select";
+import Select, { OptionProps, SingleValueProps } from "react-select";
 import Image from "next/image";
 import styles from "./select.module.scss";
-import check from "./icons/check.svg";
+// import check from "./icons/check.svg";
+import check from "/public/icons/check-md.svg";
 
 interface DaProps {
   label?: string;
@@ -178,7 +175,7 @@ const CustomSelect = ({
 
   return (
     <div className={styles.box}>
-      <label>
+      <label className="outerLabel">
         {label}
         <Select
           value={selectedOption}
