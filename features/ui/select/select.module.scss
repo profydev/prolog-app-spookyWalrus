@@ -29,6 +29,7 @@ label {
   font-weight: 400;
   line-height: 20px;
 }
+
 .hideHint {
   display: none;
 }
@@ -47,13 +48,15 @@ label {
 .hideError {
   display: none;
 }
+
 .content {
   display: flex;
   align-items: center;
-  gap: 10px;
-  justify-content: start;
+  gap: 8px;
+  flex: 1 0 0;
 }
 
-.ValueContainer {
-  display: inline-flex;
+.checkMarkIcon {
+  position: absolute;
+  right: 14px;
 }

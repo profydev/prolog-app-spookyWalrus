@@ -3,143 +3,176 @@ import Select, {
   OptionProps,
   SingleValueProps,
   // components,
-  // Props as SelectProps,
 } from "react-select";
-// import { CSSObject } from "@emotion/react";
-// import { ControlProps } from "react-select/dist/declarations/src/components/Control";
-// import classNames from "classnames";
+import Image from "next/image";
 import styles from "./select.module.scss";
-import { AnyPtrRecord } from "dns";
-// import Icon from "./icons/user-select.svg";
+import check from "./icons/check.svg";
 
-// export enum Color {
-//   empty = "#D0D5DD",
-//   filled = "#D0D5DD",
-//   // focused = "#D6BBFB",
-//   focused = "#0cef6e",
-//   disabled = "#D0D5DD",
-//   open = "#0fe71a",
-// }
-
-// export enum BgColor {
-//   empty = "#FFF",
-//   filled = "#fff",
-//   focused = "#0c4df0",
-//   disabled = "#0cf0c6",
-//   open = "#fff",
-// }
-
-export enum Shadow {
-  focused = "0px 0px 0px 4px #F4EBFF, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
-  default = "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
-}
-interface Props {
+interface DaProps {
   label?: string;
-  name?: string;
-  children: React.ReactNode;
   className?: string;
-  onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   onChange?: () => void;
   showIcon: boolean;
-  showError?: boolean;
+  isError?: boolean;
   hint?: string;
   errorMess?: string;
   isFocused?: boolean;
   isDisabled?: boolean;
-  isSelected?: boolean;
-  isHovered?: boolean;
-  isMulti?: boolean;
-  menuIsOpen?: boolean;
-  hasValue?: boolean;
-  state?: string;
 }
+
+type OptionType = {
+  value: string;
+  item: string;
+  icon: string;
+};
 
 const options = [
   {
     value: "Monsterous Engine",
-    label: "Monsterous Engine",
+    item: "Monsterous Engine",
     icon: "./icons/user-select.svg",
   },
   {
     value: "Love Pudding",
-    label: "Love Pudding",
+    item: "Love Pudding",
     icon: "./icons/user-select.svg",
   },
   {
     value: "Purple Headed Warrior",
-    label: "Purple Headed Warrior",
+    item: "Purple Headed Warrior",
     icon: "./icons/user-select.svg",
   },
 ];
 
-interface CustomOptionProps extends OptionProps<any, any> {
-  data: OptionType | null;
+interface CustomOptionProps extends OptionProps<OptionType, false> {
   showIcon: boolean;
 }
 
 const CustomOption = (props: CustomOptionProps) => {
-  const { data, ...rest } = props;
+  const { data, isSelected, ...rest } = props;
+  if (!data) {
+    return null;
+  }
+
   return (
-    <div className={styles.content} {...rest.innerProps}>
-      {props.showIcon && <img src={data?.icon} alt={data?.label} />}
-      {data?.label}
+    <div
+      className={styles.content}
+      {...rest.innerProps}
+      style={{
+        backgroundColor: isSelected ? "#FCFAFF" : "#fff",
+      }}
+    >
+      {props.showIcon && (
+        <img src={data?.icon} alt={data?.item} className="icon" />
+      )}
+      <div className="menuSelect">{data?.item}</div>
+      <div className={isSelected ? "checkMarkIcon" : ""}>
+        {isSelected && <Image src={check} alt="checked" />}
+      </div>
     </div>
   );
 };
 
-type OptionType = {
-  label: string;
-  value: string;
-  icon: string;
-} | null;
-
-interface CustomSingleValueProps extends SingleValueProps<OptionType, boolean> {
-  data: OptionType;
+interface CustomSingleValueProps extends SingleValueProps<OptionType, false> {
   showIcon: boolean;
 }
 const CustomSingleValue = (props: CustomSingleValueProps) => {
   const { data, ...rest } = props;
+  // const { data, showIcon, ...rest } = props;
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className={styles.content} {...rest.innerProps}>
-      {props.showIcon && <img src={data?.icon} alt={data?.label} />}
-      {data?.label}
+      {props.showIcon && <img src={data?.icon} alt={data?.item} />}
+      {data?.item}
     </div>
   );
 };
 
 const CustomSelect = ({
   label,
-  // onChange,
   showIcon,
-  showError,
+  isError,
+  isDisabled,
   hint,
   errorMess,
-  state,
-}: Props) => {
-  const [selectedOption, setSelectedOption] = useState(null);
-  const handleSelectChange = (newValue: any) => {
+}: DaProps) => {
+  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+  const handleSelectChange = (newValue: OptionType | null) => {
     setSelectedOption(newValue);
-    console.log(newValue);
   };
 
-  const getColorScheme = (state: Props) => {
-    switch (true) {
-      case state.isFocused:
+  type CheckYourState = {
+    isFocused: boolean;
+    isDisabled: boolean;
+    isError?: boolean;
+    menuIsOpen?: boolean;
+  };
+  const getColorScheme = (state: CheckYourState) => {
+    if (state.isError) {
+      if (state.menuIsOpen) {
         return {
-          borderColor: "red",
-          backgroundColor: "yellow",
-        };
-      case state.isDisabled:
-        return {
-          borderColor: "blue",
-          backgroundColor: "orange",
-        };
-      default:
-        return {
-          borderColor: "green",
+          borderColor: "#FDA29B",
           backgroundColor: "#fff",
+          boxShadow: "0px 0px 0px 4px #FEE4E2",
+          "&:hover": {
+            boxShadow: "0px 0px 0px 4px #FEE4E2",
+            borderColor: "#FDA29B",
+          },
         };
+      } else {
+        return {
+          borderColor: "#FDA29B",
+          backgroundColor: "#fff",
+          "&:hover": {
+            boxShadow: "0px 0px 0px 4px #FEE4E2",
+            borderColor: "#FDA29B",
+          },
+        };
+      }
+    } else {
+      switch (true) {
+        case state.menuIsOpen:
+          return {
+            borderColor: "#D6BBFB",
+            backgroundColor: "#fff",
+            color: "#101828",
+            boxShadow: "0px 0px 0px 4px #F4EBFF",
+            "&:hover": {
+              boxShadow: "0px 0px 0px 4px #F4EBFF",
+              borderColor: "#D6BBFB",
+            },
+          };
+        case state.isFocused:
+          return {
+            borderColor: "#D6BBFB",
+            backgroundColor: "#fff",
+            boxShadow: "0px 0px 0px 4px #F4EBFF",
+            color: "#101828",
+            "&:hover": {
+              boxShadow: "0px 0px 0px 4px #F4EBFF",
+              borderColor: "#D6BBFB",
+            },
+          };
+        case state.isDisabled:
+          return {
+            borderColor: "#D0D5DD",
+            backgroundColor: "#F9FAFB",
+            color: "#667085",
+            "&:hover": { boxShadow: "none" },
+          };
+        default:
+          return {
+            borderColor: "#D0D5DD",
+            backgroundColor: "#fff",
+            "&:hover": {
+              boxShadow: "0px 0px 0px 4px #F4EBFF",
+              borderColor: "#D6BBFB",
+            },
+          };
+      }
     }
   };
 
@@ -152,6 +185,7 @@ const CustomSelect = ({
           placeholder={"Select an item"}
           onChange={handleSelectChange}
           options={options}
+          isDisabled={isDisabled}
           components={{
             Option: (props) => <CustomOption {...props} showIcon={showIcon} />,
             SingleValue: (props) => (
@@ -159,25 +193,50 @@ const CustomSelect = ({
             ),
           }}
           styles={{
-            control: (baseStyles, state) => ({
+            control: (baseStyles, state) => {
+              const colorScheme = getColorScheme({ ...state, isError });
+              return {
+                ...baseStyles,
+                borderColor: colorScheme.borderColor,
+                backgroundColor: colorScheme.backgroundColor,
+                boxShadow: colorScheme.boxShadow,
+                "&:hover": colorScheme["&:hover"],
+                cursor: "not allowed",
+                isSearchable: false,
+                borderRadius: "12px",
+                padding: "10px 14px",
+                width: "320px",
+                height: "44px",
+              };
+            },
+            valueContainer: (provided) => ({
+              ...provided,
+              display: "inline",
+              input: "none",
+              padding: "0px",
+            }),
+            indicatorSeparator: (baseStyles) => ({
               ...baseStyles,
-              borderColor: getColorScheme(state).borderColor,
-              backgroundColor: getColorScheme(state)?.backgroundColor,
-              "&:hover": {
-                borderColor: "none",
-                boxShadow: "none",
-              },
-              cursor: "not allowed",
-              isSearchable: false,
-              borderRadius: "12px",
-              display: "flex",
+              display: "none",
+            }),
+            indicatorsContainer: (baseStyles) => ({
+              ...baseStyles,
+              padding: "0px 8px 8px 8px",
+            }),
+            menuList: (baseStyles) => ({
+              ...baseStyles,
+              padding: "4px 14px 4px 14px",
+            }),
+            input: (baseStyles) => ({
+              ...baseStyles,
+              display: "inline-flex",
+              width: "0px",
+              height: "0px",
             }),
           }}
         />
-        <span className={showError ? styles.hideHint : styles.hint}>
-          {hint}
-        </span>
-        <span className={showError ? styles.error : styles.hideError}>
+        <span className={isError ? styles.hideHint : styles.hint}>{hint}</span>
+        <span className={isError ? styles.error : styles.hideError}>
           {errorMess}
         </span>
       </label>
