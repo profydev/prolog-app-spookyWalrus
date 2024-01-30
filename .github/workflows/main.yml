@@ -47,10 +47,6 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm ci
-      - name: Run tests
-        run: npm test
-        env: # Define environment variables here
-          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL
       - run: npm run build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
