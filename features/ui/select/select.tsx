@@ -102,7 +102,11 @@ const Select = ({
             {data.map((data) => (
               <Listbox.Option key={data.id} value={data.value} as={Fragment}>
                 {({ active, selected }) => (
-                  <li className={`${active ? styles.listActive : ""}`}>
+                  <li
+                    className={`${styles.listItems} ${
+                      active ? styles.listActive : ""
+                    }`}
+                  >
                     <div className={styles.listDiv}>
                       {isIcon && <Image src={UserIcon} alt={UserIcon} />}
                       {data.item}
