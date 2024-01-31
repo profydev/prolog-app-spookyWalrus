@@ -1,8 +1,8 @@
 import { Meta, StoryFn } from "@storybook/react";
-import CustomSelect from "./select";
+import Select from "./select";
 
-const meta: Meta<typeof CustomSelect> = {
-  component: CustomSelect,
+const meta: Meta<typeof Select> = {
+  component: Select,
   title: "Dropdown Select",
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
@@ -12,15 +12,13 @@ const meta: Meta<typeof CustomSelect> = {
 };
 export default meta;
 
-const Template: StoryFn<typeof CustomSelect> = ({ ...args }) => (
-  <CustomSelect {...args} />
-);
+const Template: StoryFn<typeof Select> = ({ ...args }) => <Select {...args} />;
 
 export const Default = Template.bind({});
 Default.argTypes = {
   isDisabled: { control: "boolean" },
-  isFocused: { control: "boolean" },
   isError: { control: "boolean" },
+  isIcon: { control: "boolean" },
   hint: {
     control: { control: "text" },
   },
@@ -30,10 +28,9 @@ Default.argTypes = {
 };
 
 Default.args = {
-  showIcon: false,
+  isIcon: false,
   isError: false,
   isDisabled: false,
   hint: "What hint?",
-  label: "The label",
   errorMess: "There's an error",
 };

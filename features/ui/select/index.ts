@@ -1,2 +1,2 @@
-import CustomSelect from "./select";
-export { CustomSelect };
+import Select from "./select";
+export { Select };
