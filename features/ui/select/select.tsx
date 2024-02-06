@@ -1,244 +1,146 @@
-import React, { useState } from "react";
-import Select, { OptionProps, SingleValueProps } from "react-select";
+import { useState, Fragment } from "react";
+import { Listbox } from "@headlessui/react";
+import classNames from "classnames";
 import Image from "next/image";
 import styles from "./select.module.scss";
-// import check from "./icons/check.svg";
-import check from "/public/icons/check-md.svg";
+import CheckIcon from "public/icons/check-md.svg";
+import UserIcon from "public/icons/user-select.svg";
+import ChevDown from "public/icons/chevron-down.svg";
 
-interface DaProps {
-  label?: string;
-  className?: string;
-  onChange?: () => void;
-  showIcon: boolean;
-  isError?: boolean;
-  hint?: string;
-  errorMess?: string;
-  isFocused?: boolean;
-  isDisabled?: boolean;
+// const options = [
+//   {
+//     value: "Monsterous Engine",
+//     item: "Monsterous Engine",
+//     // icon: "./icons/user-select.svg",
+//   },
+//   {
+//     value: "Love Pudding",
+//     item: "Love Pudding",
+//     // icon: "./icons/user-select.svg",
+//   },
+//   {
+//     value: "Purple Headed Warrior",
+//     item: "Purple Headed Warrior",
+//     icon: "./icons/user-select.svg",
+//   },
+// ];
+
+type MenuItem = { id: number; value: string; item: string };
+
+interface SelectProps {
+  label: string;
+  hint: string;
+  errorMess: string;
+  isError: boolean;
+  isIcon: boolean;
+  isDisabled: boolean;
+  className: string;
+  onChange: (value: string) => void;
+  menuList: MenuItem[];
+  placeholder: string;
+  // setListType: (value: string) => void;
 }
 
-type OptionType = {
-  value: string;
-  item: string;
-  icon: string;
-};
+const Select = ({
+  label = "Label goes here",
+  hint,
+  errorMess,
+  isError,
+  isIcon,
+  isDisabled,
+  onChange,
+  menuList,
+  placeholder,
+}: SelectProps) => {
+  const [selectedItem, setSelectedItem] = useState("");
+  // const [menuSelect, setMenuSelect] = useState("");
 
-const options = [
-  {
-    value: "Monsterous Engine",
-    item: "Monsterous Engine",
-    icon: "./icons/user-select.svg",
-  },
-  {
-    value: "Love Pudding",
-    item: "Love Pudding",
-    icon: "./icons/user-select.svg",
-  },
-  {
-    value: "Purple Headed Warrior",
-    item: "Purple Headed Warrior",
-    icon: "./icons/user-select.svg",
-  },
-];
+  function menuStyles() {
+    if (selectedItem === "") {
+      if (isDisabled && isError) {
+        return classNames(
+          styles.menuButton,
+          styles.menuDefault,
+          styles.disablError,
+        );
+      }
+      if (isDisabled) {
+        return classNames(
+          styles.menuButton,
+          styles.menuDefault,
+          styles.disabled,
+        );
+      }
+      if (isError) {
+        return classNames(
+          styles.menuButton,
+          styles.menuDefault,
+          styles.isError,
+        );
+      }
+      return classNames(styles.menuButton, styles.menuDefault);
+    } else if (isDisabled) {
+      return classNames(styles.menuButton, styles.disabled);
+    } else if (isError) {
+      return classNames(styles.menuButton, styles.isError, styles.menuChev);
+    }
+    return classNames(styles.menuButton, styles.menuChev);
+  }
 
-interface CustomOptionProps extends OptionProps<OptionType, false> {
-  showIcon: boolean;
-}
+  // if (onchange) {
+  // onchange(selectedItem);
+  // }
 
-const CustomOption = (props: CustomOptionProps) => {
-  const { data, isSelected, ...rest } = props;
-  if (!data) {
-    return null;
+  function setOnchangeling(value: string) {
+    // console.log("setOnchangeling: ", value);
+    setSelectedItem(value);
+    onChange(value);
   }
 
   return (
-    <div
-      className={styles.content}
-      {...rest.innerProps}
-      style={{
-        backgroundColor: isSelected ? "#FCFAFF" : "#fff",
-      }}
-    >
-      {props.showIcon && (
-        <img src={data?.icon} alt={data?.item} className="icon" />
-      )}
-      <div className="menuSelect">{data?.item}</div>
-      <div className={isSelected ? "checkMarkIcon" : ""}>
-        {isSelected && <Image src={check} alt="checked" />}
+    <div>
+      <div className={styles.outerLabel}>{label}</div>
+      <div className={styles.menuBox}>
+        <Listbox
+          value={selectedItem}
+          onChange={setOnchangeling}
+          as={Fragment}
+          disabled={isDisabled}
+        >
+          <Listbox.Button className={menuStyles}>
+            <div className={styles.buttonBits}>
+              {isIcon && <Image src={UserIcon} alt={UserIcon} />}
+              {selectedItem || placeholder}
+            </div>
+            <Image src={ChevDown} alt={ChevDown} className={styles.menuChev} />
+          </Listbox.Button>
+          <Listbox.Options className={styles.menu}>
+            {menuList.map((data) => (
+              <Listbox.Option key={data.id} value={data.value} as={Fragment}>
+                {({ active, selected }) => (
+                  <li
+                    className={`${styles.listItems} ${
+                      active ? styles.listActive : ""
+                    }`}
+                  >
+                    <div className={styles.listDiv}>
+                      {isIcon && <Image src={UserIcon} alt={UserIcon} />}
+                      {data.item}
+                    </div>
+                    {selected && <Image src={CheckIcon} alt={CheckIcon} />}
+                  </li>
+                )}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Listbox>
+        <span className={isError ? styles.hideHint : styles.hint}>{hint}</span>
+        <span className={isError ? styles.error : styles.hideError}>
+          {errorMess}
+        </span>
       </div>
     </div>
   );
 };
 
-interface CustomSingleValueProps extends SingleValueProps<OptionType, false> {
-  showIcon: boolean;
-}
-const CustomSingleValue = (props: CustomSingleValueProps) => {
-  const { data, ...rest } = props;
-  // const { data, showIcon, ...rest } = props;
-  if (!data) {
-    return null;
-  }
-
-  return (
-    <div className={styles.content} {...rest.innerProps}>
-      {props.showIcon && <img src={data?.icon} alt={data?.item} />}
-      {data?.item}
-    </div>
-  );
-};
-
-const CustomSelect = ({
-  label,
-  showIcon,
-  isError,
-  isDisabled,
-  hint,
-  errorMess,
-}: DaProps) => {
-  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
-  const handleSelectChange = (newValue: OptionType | null) => {
-    setSelectedOption(newValue);
-  };
-
-  type CheckYourState = {
-    isFocused: boolean;
-    isDisabled: boolean;
-    isError?: boolean;
-    menuIsOpen?: boolean;
-  };
-  const getColorScheme = (state: CheckYourState) => {
-    if (state.isError) {
-      if (state.menuIsOpen) {
-        return {
-          borderColor: "#FDA29B",
-          backgroundColor: "#fff",
-          boxShadow: "0px 0px 0px 4px #FEE4E2",
-          "&:hover": {
-            boxShadow: "0px 0px 0px 4px #FEE4E2",
-            borderColor: "#FDA29B",
-          },
-        };
-      } else {
-        return {
-          borderColor: "#FDA29B",
-          backgroundColor: "#fff",
-          "&:hover": {
-            boxShadow: "0px 0px 0px 4px #FEE4E2",
-            borderColor: "#FDA29B",
-          },
-        };
-      }
-    } else {
-      switch (true) {
-        case state.menuIsOpen:
-          return {
-            borderColor: "#D6BBFB",
-            backgroundColor: "#fff",
-            color: "#101828",
-            boxShadow: "0px 0px 0px 4px #F4EBFF",
-            "&:hover": {
-              boxShadow: "0px 0px 0px 4px #F4EBFF",
-              borderColor: "#D6BBFB",
-            },
-          };
-        case state.isFocused:
-          return {
-            borderColor: "#D6BBFB",
-            backgroundColor: "#fff",
-            boxShadow: "0px 0px 0px 4px #F4EBFF",
-            color: "#101828",
-            "&:hover": {
-              boxShadow: "0px 0px 0px 4px #F4EBFF",
-              borderColor: "#D6BBFB",
-            },
-          };
-        case state.isDisabled:
-          return {
-            borderColor: "#D0D5DD",
-            backgroundColor: "#F9FAFB",
-            color: "#667085",
-            "&:hover": { boxShadow: "none" },
-          };
-        default:
-          return {
-            borderColor: "#D0D5DD",
-            backgroundColor: "#fff",
-            "&:hover": {
-              boxShadow: "0px 0px 0px 4px #F4EBFF",
-              borderColor: "#D6BBFB",
-            },
-          };
-      }
-    }
-  };
-
-  return (
-    <div className={styles.box}>
-      <label className="outerLabel">
-        {label}
-        <Select
-          value={selectedOption}
-          placeholder={"Select an item"}
-          onChange={handleSelectChange}
-          options={options}
-          isDisabled={isDisabled}
-          components={{
-            Option: (props) => <CustomOption {...props} showIcon={showIcon} />,
-            SingleValue: (props) => (
-              <CustomSingleValue {...props} showIcon={showIcon} />
-            ),
-          }}
-          styles={{
-            control: (baseStyles, state) => {
-              const colorScheme = getColorScheme({ ...state, isError });
-              return {
-                ...baseStyles,
-                borderColor: colorScheme.borderColor,
-                backgroundColor: colorScheme.backgroundColor,
-                boxShadow: colorScheme.boxShadow,
-                "&:hover": colorScheme["&:hover"],
-                cursor: "not allowed",
-                isSearchable: false,
-                borderRadius: "12px",
-                padding: "10px 14px",
-                width: "320px",
-                height: "44px",
-              };
-            },
-            valueContainer: (provided) => ({
-              ...provided,
-              display: "inline",
-              input: "none",
-              padding: "0px",
-            }),
-            indicatorSeparator: (baseStyles) => ({
-              ...baseStyles,
-              display: "none",
-            }),
-            indicatorsContainer: (baseStyles) => ({
-              ...baseStyles,
-              padding: "0px 8px 8px 8px",
-            }),
-            menuList: (baseStyles) => ({
-              ...baseStyles,
-              padding: "4px 14px 4px 14px",
-            }),
-            input: (baseStyles) => ({
-              ...baseStyles,
-              display: "inline-flex",
-              width: "0px",
-              height: "0px",
-            }),
-          }}
-        />
-        <span className={isError ? styles.hideHint : styles.hint}>{hint}</span>
-        <span className={isError ? styles.error : styles.hideError}>
-          {errorMess}
-        </span>
-      </label>
-    </div>
-  );
-};
-
-export default CustomSelect;
+export default Select;
