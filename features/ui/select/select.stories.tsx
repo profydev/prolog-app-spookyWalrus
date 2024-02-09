@@ -19,7 +19,7 @@ const Template: StoryFn<typeof CustomSelect> = ({ ...args }) => (
 export const Default = Template.bind({});
 Default.argTypes = {
   isDisabled: { control: "boolean" },
-  isFocused: { control: "boolean" },
+  // isFocused: { control: "boolean" },
   isError: { control: "boolean" },
   hint: {
     control: { control: "text" },
@@ -30,7 +30,7 @@ Default.argTypes = {
 };
 
 Default.args = {
-  showIcon: false,
+  // showIcon: false,
   isError: false,
   isDisabled: false,
   hint: "What hint?",

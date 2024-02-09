@@ -22,7 +22,7 @@ export const Default = Template.bind({});
 Default.args = {
   size: CheckSize.md,
   color: CheckColor.default,
-  label: "Label",
+  // label: "Label",
   checked: false,
   indeterminate: true,
 };
@@ -32,9 +32,9 @@ Default.argTypes = {
     control: { type: "select" },
     options: ["sm", "md"],
   },
-  label: {
-    control: { control: "text" },
-  },
+  // label: {
+  //   control: { control: "text" },
+  // },
   color: {
     control: { type: "select" },
     options: ["default", "hover", "focus", "disabled"],
