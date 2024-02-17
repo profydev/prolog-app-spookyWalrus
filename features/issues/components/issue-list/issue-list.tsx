@@ -69,8 +69,6 @@ export function IssueList() {
   function setURL(menuVal: string) {
     let resParam = router.query.status;
     let levParam = router.query.level;
-    console.log("params on menu selection: ", resParam, levParam);
-    // console.log("menu selection: ", menuVal);
 
     let val;
     if (menuVal.includes("res-")) {
@@ -90,18 +88,14 @@ export function IssueList() {
       // }
     }
 
-    console.log("res lev @: ", resParam, levParam);
     // set values on page load, if no selections made
     if (resParam === undefined) {
-      // resParam = undefined;
       resParam = "default";
     }
     if (levParam === undefined) {
-      // levParam = undefined;
       levParam = "default";
     }
 
-    console.log("params after parsing: ", resParam, levParam);
     pushPath(resParam, levParam);
   }
 
@@ -109,7 +103,6 @@ export function IssueList() {
     status: string | string[] | undefined,
     level: string | string[] | undefined,
   ) {
-    console.log("router pushing: ", status, level);
     router.replace({
       pathname: router.pathname,
       query: {

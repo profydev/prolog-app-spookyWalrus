@@ -38,8 +38,6 @@ export function useGetFiltIssues(
       );
     }
   }, [query.data, page, status, level, queryClient]);
-  console.log("call made: ", page, status, level);
-  console.log("returned data: ", query.data);
   return query;
 }
 // =========  original =====================

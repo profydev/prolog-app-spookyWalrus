@@ -3,27 +3,9 @@ import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import Image from "next/image";
 import styles from "./select.module.scss";
-import CheckIcon from "public/icons/check-md.svg";
-import UserIcon from "public/icons/user-select.svg";
-import ChevDown from "public/icons/chevron-down.svg";
-
-// const options = [
-//   {
-//     value: "Monsterous Engine",
-//     item: "Monsterous Engine",
-//     // icon: "./icons/user-select.svg",
-//   },
-//   {
-//     value: "Love Pudding",
-//     item: "Love Pudding",
-//     // icon: "./icons/user-select.svg",
-//   },
-//   {
-//     value: "Purple Headed Warrior",
-//     item: "Purple Headed Warrior",
-//     icon: "./icons/user-select.svg",
-//   },
-// ];
+import CheckIcon from "/icons/check-md.svg";
+import UserIcon from "/icons/user-select.svg";
+import ChevDown from "/icons/chevron-down.svg";
 
 type MenuItem = { id: number; value: string | boolean; item: string };
 
@@ -53,7 +35,6 @@ const Select = ({
   placeholder,
 }: SelectProps) => {
   const [selectedItem, setSelectedItem] = useState<string | boolean>(false);
-  // const [menuSelect, setMenuSelect] = useState("");
 
   function menuStyles() {
     if (selectedItem === "") {
@@ -86,10 +67,6 @@ const Select = ({
     }
     return classNames(styles.menuButton, styles.menuChev);
   }
-
-  // if (onchange) {
-  // onchange(selectedItem);
-  // }
 
   function setOnchangeling(value: string) {
     // console.log("setOnchangeling: ", value);
