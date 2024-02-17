@@ -14,7 +14,8 @@ interface inputProps {
   inputLabel: string;
   hint: string;
   errorMess: string;
-  children: React.ReactNode;
+  // children: React.ReactNode;
+  // children: string|ReactNode;
   icon: string | ReactNode;
 }
 
@@ -26,7 +27,7 @@ const Input = ({
   inputLabel,
   hint,
   errorMess,
-  children,
+  // children,
   icon,
 }: inputProps) => {
   return (
@@ -66,7 +67,7 @@ const Input = ({
         {isError && (
           <Image src={alert} alt="alert" className={styles.alertIcon} />
         )}
-        {children}
+        {/* {children} */}
       </div>
       <span className={isError || noHint ? styles.hideHint : styles.hint}>
         {hint}

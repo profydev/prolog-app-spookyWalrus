@@ -255,11 +255,8 @@ export function IssueList() {
               noHint={false}
               errorMess=""
               // children
-              // icon={<FaMagnifyingGlass />}
-              icon
-            >
-              <FaMagnifyingGlass />
-            </Input>
+              icon={<FaMagnifyingGlass />}
+            ></Input>
           </div>
         </div>
       </div>
