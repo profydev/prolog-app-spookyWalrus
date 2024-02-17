@@ -1,36 +1,43 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
-import { useGetIssues } from "../../api/use-get-issues";
+// import { useGetIssues } from "../../api/use-get-issues";
+import { useGetFiltIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import Select from "../../../ui/select/select";
-// import Input from "features/ui/input/input";
-import { Issue } from "@api/issues.types";
-// import Image from "next/image";
-// import Icon from "../../../../public/icons/support.svg";
-// import Icon from "public/icons/support.svg";
+// import { Issue } from "@api/issues.types";
+import Input from "features/ui/input/input";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 // import Checkbox from "../../../ui/checkbox/checkbox";
 
 export function IssueList() {
-  const [isResolve, setResolve] = useState<string>("no selection");
-  const [isLevel, setLevel] = useState<string>("no selection");
-  const [isSearch, setSearch] = useState<string>("");
-  const [finalList, setFinalList] = useState<Issue[] | null>(null);
-  console.log("states at: ", isResolve, isLevel, isSearch);
-
   const router = useRouter();
   const page = Number(router.query.page || 1);
+  const stat = router.query.status;
+  const lev = router.query.level;
+  // const navigateToPage = (newPage: number) => {
+  //   router.push({
+  //     pathname: router.pathname,
+  //     query: { page: newPage },
+  //   });
+  // };
+
   const navigateToPage = (newPage: number) => {
     router.push({
       pathname: router.pathname,
-      query: { page: newPage },
+      query: {
+        page: newPage,
+        status: stat,
+        level: lev,
+      },
     });
-    setRes(isResolve);
   };
+  // console.log("stat, lev on reload: ", stat, lev);
 
-  const issuesPage = useGetIssues(page);
+  // const issuesPage = theFilterList(page, stat, lev);
+  const issuesPage = useGetFiltIssues(page, stat, lev);
+  // const issuesPage = useGetIssues(page);
   const projects = useGetProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -54,79 +61,142 @@ export function IssueList() {
     }),
     {} as Record<string, ProjectLanguage>,
   );
-  const { items, meta } = issuesPage.data || {};
-  //indices ==================================== each indiv. issue, filter looks at these categories for every issue
 
+  const { items, meta } = issuesPage.data || {};
+
+  // ================  filter functions, setting filter values to URL ==========================
+
+  function setURL(menuVal: string) {
+    let resParam = router.query.status;
+    let levParam = router.query.level;
+    console.log("params on menu selection: ", resParam, levParam);
+    // console.log("menu selection: ", menuVal);
+
+    let val;
+    if (menuVal.includes("res-")) {
+      val = menuVal.split("-");
+      if (val[1] === "false") {
+        resParam = "default";
+      } else {
+        resParam = val[1];
+      }
+    } else {
+      val = menuVal.split("-");
+      if (val[1] === "false") {
+        levParam = "default";
+      } else {
+        levParam = val[1];
+      }
+      // }
+    }
+
+    console.log("res lev @: ", resParam, levParam);
+    // set values on page load, if no selections made
+    if (resParam === undefined) {
+      // resParam = undefined;
+      resParam = "default";
+    }
+    if (levParam === undefined) {
+      // levParam = undefined;
+      levParam = "default";
+    }
+
+    console.log("params after parsing: ", resParam, levParam);
+    pushPath(resParam, levParam);
+  }
+
+  function pushPath(
+    status: string | string[] | undefined,
+    level: string | string[] | undefined,
+  ) {
+    console.log("router pushing: ", status, level);
+    router.replace({
+      pathname: router.pathname,
+      query: {
+        page: page,
+        status: status,
+        level: level,
+      },
+    });
+  }
+
+  //======================  menu selection behaviour =====
   function setRes(val: string) {
-    setResolve(val);
-    filterSearch(isSearch, filterLevels(isLevel, filterResolve(val)));
+    // const resVal;
+    if (val === "Unresolved") {
+      val = "open";
+    }
+    const resVal = "res-" + val;
+    setURL(resVal.toLowerCase());
   }
   function setLev(val: string) {
-    setLevel(val);
-    filterSearch(isSearch, filterLevels(val, filterResolve(isResolve)));
+    // let levVal;
+    const levVal = "lev-" + val;
+    setURL(levVal.toLowerCase());
   }
-  function setSer(event: React.ChangeEvent<HTMLInputElement>) {
-    const text = event.target.value;
-    setSearch(text);
-    filterSearch(text, filterLevels(isLevel, filterResolve(isResolve)));
-  }
+  // function setSer(event: React.ChangeEvent<HTMLInputElement>) {
+  // const text = event.target.value;
+  // setSearch(text);
+  // filterSearch(text, filterLevels(isLevel, filterResolve(isResolve)));
+  // }
 
-  function filterResolve(resstate: string) {
-    if (resstate === "--") {
-      return items;
-    } else {
-      const nuResp = items.filter((val) => {
-        if (resstate.toLowerCase() === "unresolved") {
-          if (val.status === "open") {
-            return val;
-          }
-        } else if (resstate.toLowerCase() === "resolved") {
-          if (val.status === "resolved") {
-            return val;
-          }
-        }
-      });
-      return nuResp;
-    }
-  }
+  // function filterResolve(resstate: string) {
+  //   if (resstate === "--") {
+  //     return items;
+  //   } else {
+  //     const nuResp = items.filter((val) => {
+  //       if (resstate.toLowerCase() === "unresolved") {
+  //         if (val.status === "open") {
+  //           return val;
+  //         }
+  //       } else if (resstate.toLowerCase() === "resolved") {
+  //         if (val.status === "resolved") {
+  //           return val;
+  //         }
+  //       }
+  //     });
+  //     return nuResp;
+  //   }
+  // }
 
-  function filterLevels(level: string, list: Issue[]) {
-    if (level === "--") {
-      return list;
-    } else {
-      const nuLevels = list.filter((val) => {
-        if (val.level === level.toLowerCase()) {
-          return val;
-        }
-      });
-      return nuLevels;
-    }
-  }
+  // function filterLevels(level: string, list: Issue[]) {
+  //   if (level === "--") {
+  //     return list;
+  //   } else {
+  //     const nuLevels = list.filter((val) => {
+  //       if (val.level === level.toLowerCase()) {
+  //         return val;
+  //       }
+  //     });
+  //     return nuLevels;
+  //   }
+  // }
 
-  function filterSearch(text: string, list: Issue[]) {
-    if (text.length > 0) {
-      const daList = list.filter((val) => {
-        return val.name.toLowerCase().includes(text.toLowerCase());
-      });
-      return setFinalList(daList);
-    } else {
-      setFinalList(list);
-    }
-  }
+  // function filterSearch(text: string, list: Issue[]) {
+  //   if (text.length > 0) {
+  //     const daList = list.filter((val) => {
+  //       return val.name.toLowerCase().includes(text.toLowerCase());
+  //     });
+  //     return setFinalList(daList);
+  //   } else {
+  //     setFinalList(list);
+  //   }
+  // }
+  // ================== menuList content
 
   const resolveMenu = [
-    { id: 0, value: "--", item: "--" },
+    { id: 0, value: false, item: "--" },
     { id: 1, value: "Resolved", item: "Resolved" },
     { id: 2, value: "Unresolved", item: "Unresolved" },
   ];
 
   const levelMenu = [
-    { id: 0, value: "--", item: "--" },
+    { id: 0, value: false, item: "--" },
     { id: 1, value: "Error", item: "Error" },
     { id: 2, value: "Warning", item: "Warning" },
     { id: 3, value: "Info", item: "Info" },
   ];
-  // Define the menuList type based on the setMenu property
+  // ======  Define the menuList type/content based on the menuList property
   const getMenuList = (menuType: string) => {
     if (menuType === "resolve") {
       return resolveMenu;
@@ -146,7 +216,7 @@ export function IssueList() {
         <div className={styles.buttonContainer}>
           <button className={styles.resolveButton}></button>
         </div>
-        <div className={styles.filterBlock}>
+        <div className={styles.filterContainer}>
           <div className={styles.dropdownContainer}>
             <Select
               label=""
@@ -176,7 +246,7 @@ export function IssueList() {
             />
           </div>
           <div className={styles.fieldContainer}>
-            {/* <Input
+            <Input
               isDisabled={false}
               isIcon={true}
               inputLabel=""
@@ -184,15 +254,12 @@ export function IssueList() {
               hint=""
               noHint={false}
               errorMess=""
-              children
-            />
-            <Image src={Icon} alt="Icon" /> */}
-            <input
-              type="text"
-              className={styles.inputField}
-              onChange={setSer}
-              placeholder="Project Name"
-            ></input>
+              // children
+              // icon={<FaMagnifyingGlass />}
+              icon
+            >
+              <FaMagnifyingGlass />
+            </Input>
           </div>
         </div>
       </div>
@@ -210,7 +277,7 @@ export function IssueList() {
             </tr>
           </thead>
           <tbody>
-            {(finalList || items).map((issue) => (
+            {(items || []).map((issue) => (
               <IssueRow
                 key={issue.id}
                 issue={issue}

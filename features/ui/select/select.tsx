@@ -25,7 +25,7 @@ import ChevDown from "public/icons/chevron-down.svg";
 //   },
 // ];
 
-type MenuItem = { id: number; value: string; item: string };
+type MenuItem = { id: number; value: string | boolean; item: string };
 
 interface SelectProps {
   label: string;
@@ -52,7 +52,7 @@ const Select = ({
   menuList,
   placeholder,
 }: SelectProps) => {
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItem, setSelectedItem] = useState<string | boolean>(false);
   // const [menuSelect, setMenuSelect] = useState("");
 
   function menuStyles() {

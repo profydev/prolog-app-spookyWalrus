@@ -3,24 +3,32 @@
 @use "@styles/space";
 
 .inputContainer {
-  position: relative;
+  // position: relative;
   display: flex;
   align-items: center;
-  width: 320px;
-  gap: 10px;
+
+  // width: 320px;
+  // gap: 10px;
 }
 
-input {
+.theInput {
   display: flex;
   flex-direction: column;
+
+  // padding-left: 42px;
   padding: 10px 14px;
+  padding-left: 42px;
   gap: 8px;
+  width: 100%;
   align-self: stretch;
+  align-items: center;
   flex-grow: 1;
   font-size: 16px;
   border-radius: 8px;
   border: 1px solid var(--gray-300, #d0d5dd);
   background: var(--white, #fff);
+
+  // flex: 1 0 0;
 
   /* Shadow/xs */
   box-shadow: 0 1px 2px 0 rgb(16 24 40 / 5%);
@@ -51,7 +59,7 @@ input {
   }
 }
 
-input:focus {
+input.theInput:focus {
   border-radius: 8px;
   border: 1px solid var(--primary-300, #d6bbfb);
   outline: solid 1px var(--primary-300, #d6bbfb);
@@ -79,6 +87,10 @@ input:focus {
   height: 20px;
   padding-left: 14px;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
 }
 
 .alertIcon {
@@ -87,6 +99,9 @@ input:focus {
   padding-right: 14px;
   right: 0;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .label {

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import classNames from "classnames";
 import Image from "next/image";
 import styles from "./input.module.scss";
-import mail from "./icons/mail.svg";
+// import mail from "./icons/mail.svg";
 import alert from "../../../public/icons/alert-circle.svg";
+// import { IconType } from "react-icons";
 
 interface inputProps {
   isDisabled: boolean;
@@ -14,6 +15,7 @@ interface inputProps {
   hint: string;
   errorMess: string;
   children: React.ReactNode;
+  icon: string | ReactNode;
 }
 
 const Input = ({
@@ -25,22 +27,41 @@ const Input = ({
   hint,
   errorMess,
   children,
+  icon,
 }: inputProps) => {
   return (
     <label>
       <div className={styles.label}>{inputLabel}</div>
       <div className={styles.inputContainer}>
-        {isIcon && <Image src={mail} alt="mail" className={styles.theIcon} />}
+        {isIcon && (
+          //  <div className={styles.iconDiv}>
+          //  {isIcon && <Image src={icon} alt="icon" width="14px" className={styles.theIcon} />} */}
+          // Conditionally render the icon based on the prop */}
+          <span className={styles.theIcon}>
+            {typeof icon === "string" ? (
+              <Image
+                src={icon}
+                alt="icon"
+                height={20}
+                width={20}
+                className={styles.theIcon}
+              />
+            ) : (
+              icon
+            )}
+          </span>
+        )}
+        {/* </div> */}
         <input
           type="text"
-          className={classNames({
+          className={classNames(styles.theInput, {
             [styles.isDisabled]: isDisabled,
             [styles.iconPad]: isIcon,
             [styles.isError]: isError,
             [styles.errorFocus]: isError,
             [styles.alertPad]: isError,
           })}
-          placeholder="Type here"
+          placeholder="Project Name"
         />
         {isError && (
           <Image src={alert} alt="alert" className={styles.alertIcon} />
