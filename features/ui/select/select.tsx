@@ -3,9 +3,9 @@ import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import Image from "next/image";
 import styles from "./select.module.scss";
-import CheckIcon from "/icons/check-md.svg";
-import UserIcon from "/icons/user-select.svg";
-import ChevDown from "/icons/chevron-down.svg";
+import CheckIcon from "./icons/check.svg";
+import UserIcon from "./icons/user-select.svg";
+import ChevDown from "./icons/chevron-down.svg";
 
 type MenuItem = { id: number; value: string | boolean; item: string };
 
