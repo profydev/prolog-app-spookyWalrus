@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NavigationProvider>
         <Component {...pageProps} />
       </NavigationProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }

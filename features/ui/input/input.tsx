@@ -4,6 +4,8 @@ import Image from "next/image";
 import styles from "./input.module.scss";
 // import mail from "./icons/mail.svg";
 import alert from "../../../public/icons/alert-circle.svg";
+import type { Issue } from "@api/issues.types";
+
 // import { IconType } from "react-icons";
 
 interface inputProps {
@@ -16,6 +18,7 @@ interface inputProps {
   errorMess: string;
   // children: React.ReactNode;
   // children: string|ReactNode;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => Issue[] | void;
   icon: string | ReactNode;
 }
 
@@ -28,6 +31,7 @@ const Input = ({
   hint,
   errorMess,
   // children,
+  onChange,
   icon,
 }: inputProps) => {
   return (
@@ -63,6 +67,7 @@ const Input = ({
             [styles.alertPad]: isError,
           })}
           placeholder="Project Name"
+          onChange={onChange}
         />
         {isError && (
           <Image src={alert} alt="alert" className={styles.alertIcon} />
