@@ -1,13 +1,18 @@
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
-// import { useGetIssues } from "../../api/use-get-issues";
-import { useGetFiltIssues } from "../../api/use-get-issues";
+import { useGetIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import Select from "../../../ui/select/select";
 import Input from "features/ui/input/input";
+import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import bgCircle from "../../icons/bgCircle.svg";
+import Cloud from "../../icons/Cloud.svg";
+import CircleFilled from "../../icons/CircleFilled.svg";
+import featSearch from "../../icons/featSearch.svg";
 
 export function IssueList() {
   const router = useRouter();
@@ -15,6 +20,30 @@ export function IssueList() {
   const stat = router.query.status;
   const lev = router.query.level;
   const proj = router.query.project;
+  const [statusVal, setStatusVal] = useState<boolean | string | string[]>(
+    stat || "",
+  );
+  const [levelVal, setLevelVal] = useState<boolean | string | string[]>(
+    lev || "",
+  );
+  const [clearString, setClearString] = useState<string>("");
+
+  useEffect(() => {
+    // set menu hooks when clearing filter and on reload
+    function capitalizeFirstLetter(string: string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    if (typeof stat === "string") {
+      if (stat === "open") {
+        setStatusVal("Unresolved");
+      } else {
+        setStatusVal(capitalizeFirstLetter(stat));
+      }
+    }
+    if (typeof lev === "string") {
+      setLevelVal(capitalizeFirstLetter(lev));
+    }
+  }, [clearString, stat, lev]);
 
   const navigateToPage = (newPage: number) => {
     router.push({
@@ -27,8 +56,7 @@ export function IssueList() {
       },
     });
   };
-
-  const issuesPage = useGetFiltIssues(page, stat, lev, proj);
+  const issuesPage = useGetIssues(page, stat, lev, proj);
   const projects = useGetProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -109,8 +137,12 @@ export function IssueList() {
     });
   }
 
+  function clearMenu() {
+    setClearString("");
+    pushPath(undefined, undefined, undefined); // this also clears the state values for menus
+  }
   //======================  menu selection behaviour =====
-  function setRes(val: string) {
+  function setRes(val: string | boolean) {
     // const resVal;
     if (val === "Unresolved") {
       val = "open";
@@ -118,7 +150,7 @@ export function IssueList() {
     const resVal = "res-" + val;
     setURL(resVal.toLowerCase());
   }
-  function setLev(val: string) {
+  function setLev(val: string | boolean) {
     // let levVal;
     const levVal = "lev-" + val;
     setURL(levVal.toLowerCase());
@@ -127,6 +159,7 @@ export function IssueList() {
   // =======  fetch data, filter returned data based on text, re-load
   function filterSearch(event: React.ChangeEvent<HTMLInputElement>) {
     const text = event.target.value;
+    setClearString(text);
     pushPath(stat, lev, text);
   }
   // ================== menuList content
@@ -175,6 +208,7 @@ export function IssueList() {
               onChange={setRes}
               menuList={getMenuList("resolve")}
               placeholder="Resolved ?"
+              value={statusVal}
             />
           </div>
           <div className={styles.dropdownContainer}>
@@ -189,6 +223,7 @@ export function IssueList() {
               onChange={setLev}
               menuList={getMenuList("level")}
               placeholder="Levels?"
+              value={levelVal}
             />
           </div>
           <div className={styles.fieldContainer}>
@@ -203,56 +238,119 @@ export function IssueList() {
               // children
               icon={<FaMagnifyingGlass />}
               onChange={filterSearch}
+              value={clearString}
             ></Input>
           </div>
         </div>
       </div>
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.headerRow}>
-              <th className={styles.headerCell}>
-                {/* <Checkbox /> */}
-                Issue
-              </th>
-              <th className={styles.headerCell}>Level</th>
-              <th className={styles.headerCell}>Events</th>
-              <th className={styles.headerCell}>Users</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(items || []).map((issue) => (
-              <IssueRow
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
-          </tbody>
-        </table>
-        <div className={styles.paginationContainer}>
-          <div>
-            <button
-              className={styles.paginationButton}
-              onClick={() => navigateToPage(page - 1)}
-              disabled={page === 1}
-            >
-              Previous
-            </button>
-            <button
-              className={styles.paginationButton}
-              onClick={() => navigateToPage(page + 1)}
-              disabled={page === meta?.totalPages}
-            >
-              Next
-            </button>
-          </div>
-          <div className={styles.pageInfo}>
-            Page <span className={styles.pageNumber}>{meta?.currentPage}</span>{" "}
-            of <span className={styles.pageNumber}>{meta?.totalPages}</span>
+      {items.length > 1 ? (
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.headerRow}>
+                <th className={styles.headerCell}>
+                  {/* <Checkbox /> */}
+                  Issue
+                </th>
+                <th className={styles.headerCell}>Level</th>
+                <th className={styles.headerCell}>Events</th>
+                <th className={styles.headerCell}>Users</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(items || []).map((issue) => (
+                <IssueRow
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))}
+            </tbody>
+          </table>
+          <div className={styles.paginationContainer}>
+            <div>
+              <button
+                className={styles.paginationButton}
+                onClick={() => navigateToPage(page - 1)}
+                disabled={page === 1}
+              >
+                Previous
+              </button>
+              <button
+                className={styles.paginationButton}
+                onClick={() => navigateToPage(page + 1)}
+                disabled={page === meta?.totalPages}
+              >
+                Next
+              </button>
+            </div>
+            <div className={styles.pageInfo}>
+              Page{" "}
+              <span className={styles.pageNumber}>{meta?.currentPage}</span> of{" "}
+              <span className={styles.pageNumber}>{meta?.totalPages}</span>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className={styles.noTable}>
+          <div className={styles.emptyItems}>
+            <div className={styles.emptyContent}>
+              <div className={styles.illustration}>
+                <Image
+                  src={bgCircle}
+                  alt="bgCircle"
+                  className={styles.bgCircle}
+                />
+                <Image src={Cloud} alt="cloud" className={styles.cloud} />
+                <Image
+                  src={CircleFilled}
+                  alt="circleSM"
+                  className={styles.circleSM}
+                />
+                <Image
+                  src={CircleFilled}
+                  alt="circleMD"
+                  className={styles.circleMD}
+                />
+                <Image
+                  src={CircleFilled}
+                  alt="circleLG"
+                  className={styles.circleLG}
+                />
+                <Image
+                  src={CircleFilled}
+                  alt="circleLG"
+                  className={styles.circleLgB}
+                />
+                <div className={styles.featIconBG}>
+                  <Image
+                    src={featSearch}
+                    alt="featureIcon"
+                    className={styles.featSearch}
+                  />
+                </div>
+              </div>
+              <div className={styles.noIssueBlock}>
+                <div className={styles.noIssueHeader}>No Issues found</div>
+                <div className={styles.noIssueText}>
+                  Either the filters you selected are too restricive or there
+                  are no issues for your projects.
+                </div>
+              </div>
+            </div>
+            <div className={styles.buttonCase}>
+              <button
+                className={styles.emptyButton}
+                onClick={() => {
+                  clearMenu();
+                }}
+              >
+                Clear filters
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

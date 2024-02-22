@@ -1,11 +1,12 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import Image from "next/image";
 import styles from "./select.module.scss";
 import CheckIcon from "./icons/check.svg";
 import UserIcon from "./icons/user-select.svg";
-import ChevDown from "./icons/chevron-down.svg";
+import ChevDown from "../../../public/icons/chevron-down.svg";
+// "../../icons/chevron-down.svg";
 
 type MenuItem = { id: number; value: string | boolean; item: string };
 
@@ -17,9 +18,10 @@ interface SelectProps {
   isIcon: boolean;
   isDisabled: boolean;
   className: string;
-  onChange: (value: string) => void;
+  onChange: (value: string | boolean) => string | boolean | void;
   menuList: MenuItem[];
   placeholder: string;
+  value: boolean | string | string[];
   // setListType: (value: string) => void;
 }
 
@@ -33,8 +35,11 @@ const Select = ({
   onChange,
   menuList,
   placeholder,
+  value,
 }: SelectProps) => {
-  const [selectedItem, setSelectedItem] = useState<string | boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<string | string[] | boolean>(
+    false,
+  );
 
   function menuStyles() {
     if (selectedItem === "") {
@@ -68,18 +73,20 @@ const Select = ({
     return classNames(styles.menuButton, styles.menuChev);
   }
 
-  function setOnchangeling(value: string) {
-    // console.log("setOnchangeling: ", value);
+  function setOnchangeling(value: string | boolean) {
     setSelectedItem(value);
     onChange(value);
   }
+  useEffect(() => {
+    setSelectedItem(value);
+  }, [value]);
 
   return (
     <div>
       <div className={styles.outerLabel}>{label}</div>
       <div className={styles.menuBox}>
         <Listbox
-          value={selectedItem}
+          value={value}
           onChange={setOnchangeling}
           as={Fragment}
           disabled={isDisabled}

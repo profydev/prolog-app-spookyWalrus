@@ -20,6 +20,7 @@ interface inputProps {
   // children: string|ReactNode;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => Issue[] | void;
   icon: string | ReactNode;
+  value: string;
 }
 
 const Input = ({
@@ -33,6 +34,7 @@ const Input = ({
   // children,
   onChange,
   icon,
+  value,
 }: inputProps) => {
   return (
     <label>
@@ -68,6 +70,7 @@ const Input = ({
           })}
           placeholder="Project Name"
           onChange={onChange}
+          value={value}
         />
         {isError && (
           <Image src={alert} alt="alert" className={styles.alertIcon} />
