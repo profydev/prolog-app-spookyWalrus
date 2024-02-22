@@ -88,7 +88,6 @@ export function IssueList() {
   }
 
   // ================  parse & set filter values, set to URL ==========================
-
   function setURL(menuVal: string) {
     let resParam = router.query.status;
     let levParam = router.query.level;
