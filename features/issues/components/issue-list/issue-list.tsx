@@ -9,10 +9,10 @@ import Select from "../../../ui/select/select";
 import Input from "features/ui/input/input";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import bgCircle from "../../icons/bgCircle.svg";
-import Cloud from "../../icons/Cloud.svg";
-import CircleFilled from "../../icons/CircleFilled.svg";
-import featSearch from "../../icons/featSearch.svg";
+import bgCircle from "/public/icons/bgCircle.svg";
+import Cloud from "/public/icons/Cloud.svg";
+import CircleFilled from "/public/icons/CircleFilled.svg";
+import featSearch from "/public/icons/featSearch.svg";
 
 export function IssueList() {
   const router = useRouter();
