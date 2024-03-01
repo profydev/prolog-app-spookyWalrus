@@ -2,7 +2,92 @@
 @use "@styles/space";
 @use "@styles/font";
 
-.container {
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+}
+
+.filterbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.buttonContainer {
+  display: flex;
+  height: 1px;
+  align-items: flex-start;
+  gap: 16px;
+
+  // flex: 1 0 0;
+}
+
+.resolveButton {
+  display: flex;
+  padding: 10px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterContainer {
+  display: flex;
+  height: 44px;
+  justify-content: flex-end;
+
+  // align-items: center;
+  gap: 16px;
+  flex: 1 0 0;
+}
+
+.dropdownContainer {
+  // position: relative;
+  // bottom: 50%;
+  width: 160px;
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dropdown {
+  position: absolute;
+  display: flex;
+  padding: 10px 14px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid var(--gray-300, #d0d5dd);
+  background: var(--white, #fff);
+  box-shadow: 0 1px 2px 0 rgb(16 24 40 / 5%);
+}
+
+.fieldContainer {
+  display: flex;
+  width: 280px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inputField {
+  display: flex;
+  padding: 10px 14px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid var(--gray-300, #d0d5dd);
+  background: var(--white, #fff);
+  box-shadow: 0 1px 2px 0 rgb(16 24 40 / 5%);
+}
+
+.tableContainer {
   background: white;
   border: 1px solid color.$gray-200;
   box-sizing: border-box;
@@ -11,6 +96,7 @@
     0 2px 4px -2px rgb(16 24 40 / 6%);
   border-radius: space.$s2;
   overflow: hidden;
+  align-self: stretch;
 }
 
 .table {
@@ -57,4 +143,181 @@
 
 .pageNumber {
   font: font.$text-sm-medium;
+}
+
+// ========= empty search result
+.noTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.emptyItems {
+  display: flex;
+  width: 352px;
+  padding: 64px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+// ==== box with image and text
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.illustration {
+  width: 152px;
+  height: 118px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bgCircle {
+  width: 104px;
+  height: 104px;
+  flex-shrink: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+}
+
+.cloud {
+  width: 100%;
+  height: auto;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  filter: drop-shadow(0 8px 8px rgb(16 24 40 / 4%))
+    drop-shadow(0 20px 24px rgb(16 24 40 / 10%));
+}
+
+.circleSM {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  position: absolute;
+  top: 4px;
+  right: 18px;
+}
+
+.circleMD {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  top: 12px;
+}
+
+.circleLG {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 28px;
+}
+
+.circleLgB {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  position: absolute;
+  z-index: 2;
+  left: 5px;
+  bottom: 6px;
+}
+
+.featIconBG {
+  display: flex;
+  width: 12%;
+  height: 15%;
+  bottom: 10px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 24px;
+  background: rgb(105 65 198 / 40%);
+  backdrop-filter: blur(4px);
+  position: absolute;
+  z-index: 3;
+}
+
+.featSearch {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  position: absolute;
+}
+
+.noIssueBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+}
+
+.noIssueHeader {
+  align-self: stretch;
+  color: var(--gray-900, #101828);
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.noIssueText {
+  align-self: stretch;
+  color: var(--gray-500, #667085);
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+// === no issues: button area
+.buttonCase {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  align-self: stretch;
+}
+
+.emptyButton {
+  display: flex;
+  flex: 1 0 0;
+  padding: 10px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--primary-600, #7f56d9);
+  background: var(--primary-600, #7f56d9);
+  box-shadow: 0 1px 2px 0 rgb(16 24 40 / 5%);
+  color: #fff;
+}
+
+.emptyButton:hover {
+  cursor: pointer;
+}
+
+.emptyButton:active {
+  background: var(--primary-600, #a288d9);
 }

@@ -14,3 +14,17 @@ export async function getIssues(
   });
   return data;
 }
+
+export async function getFiltered(
+  page: number,
+  status: string | string[] | undefined | null,
+  level: string | string[] | undefined | null,
+  // project?: string | null | string[] | undefined,
+  options?: { signal?: AbortSignal },
+) {
+  const { data } = await axios.get<Page<Issue>>(ENDPOINT, {
+    params: { page: page, status: status, level: level },
+    signal: options?.signal,
+  });
+  return data;
+}

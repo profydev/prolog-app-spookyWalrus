@@ -1,34 +1,14 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import Image from "next/image";
 import styles from "./select.module.scss";
-import CheckIcon from "public/icons/check-md.svg";
+import CheckIcon from "public/icons/check-sm.svg";
 import UserIcon from "public/icons/user-select.svg";
 import ChevDown from "public/icons/chevron-down.svg";
+// "../../icons/chevron-down.svg";
 
-// eventually this should be data fetched from an API
-const data = [
-  {
-    id: 1,
-    value: "Monsterous Engine",
-    item: "Monsterous Engine",
-    icon: "./icons/user-select.svg",
-  },
-  {
-    id: 2,
-    value: "Love Pudding",
-    item: "Love Pudding",
-    icon: "./icons/user-select.svg",
-  },
-  {
-    id: 3,
-    value: "Purple Headed Warrior",
-    item: "Purple Headed Warrior",
-    icon: "./icons/user-select.svg",
-    // unavailable: alse,
-  },
-];
+type MenuItem = { id: number; value: string | boolean; item: string };
 
 interface SelectProps {
   label: string;
@@ -37,6 +17,12 @@ interface SelectProps {
   isError: boolean;
   isIcon: boolean;
   isDisabled: boolean;
+  className: string;
+  onChange: (value: string | boolean) => string | boolean | void;
+  menuList: MenuItem[];
+  placeholder: string;
+  value: boolean | string | string[];
+  // setListType: (value: string) => void;
 }
 
 const Select = ({
@@ -46,11 +32,17 @@ const Select = ({
   isError,
   isIcon,
   isDisabled,
+  onChange,
+  menuList,
+  placeholder,
+  value,
 }: SelectProps) => {
-  const [selectedItem, setSelectedItem] = useState("Make a selection");
+  const [selectedItem, setSelectedItem] = useState<string | string[] | boolean>(
+    false,
+  );
 
   function menuStyles() {
-    if (selectedItem === "Make a selection") {
+    if (selectedItem === "") {
       if (isDisabled && isError) {
         return classNames(
           styles.menuButton,
@@ -81,25 +73,33 @@ const Select = ({
     return classNames(styles.menuButton, styles.menuChev);
   }
 
+  function setOnchangeling(value: string | boolean) {
+    setSelectedItem(value);
+    onChange(value);
+  }
+  useEffect(() => {
+    setSelectedItem(value);
+  }, [value]);
+
   return (
-    <label>
+    <div>
       <div className={styles.outerLabel}>{label}</div>
       <div className={styles.menuBox}>
         <Listbox
-          value={selectedItem}
-          onChange={setSelectedItem}
+          value={value}
+          onChange={setOnchangeling}
           as={Fragment}
           disabled={isDisabled}
         >
           <Listbox.Button className={menuStyles}>
             <div className={styles.buttonBits}>
               {isIcon && <Image src={UserIcon} alt={UserIcon} />}
-              {selectedItem}
+              {selectedItem || placeholder}
             </div>
             <Image src={ChevDown} alt={ChevDown} className={styles.menuChev} />
           </Listbox.Button>
           <Listbox.Options className={styles.menu}>
-            {data.map((data) => (
+            {menuList.map((data) => (
               <Listbox.Option key={data.id} value={data.value} as={Fragment}>
                 {({ active, selected }) => (
                   <li
@@ -123,7 +123,7 @@ const Select = ({
           {errorMess}
         </span>
       </div>
-    </label>
+    </div>
   );
 };
 

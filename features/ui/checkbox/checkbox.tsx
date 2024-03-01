@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import styles from "./checkbox.module.scss";
 
@@ -15,45 +15,75 @@ export enum CheckColor {
 }
 
 interface Props {
-  label?: string;
+  // label?: string;
   size?: CheckSize;
   color?: CheckColor;
   children: React.ReactNode;
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-  onChange?: () => void;
+  onChange?: (checked: boolean) => void;
   checked: boolean;
   indeterminate: boolean;
 }
 
 const Checkbox = ({
-  label,
-  size = CheckSize.md,
+  // label,
+  size = CheckSize.sm,
   color = CheckColor.default,
   onChange,
   checked,
   indeterminate,
 }: Props) => {
-  const ref = useRef<HTMLInputElement>(null);
+  const [isChecked, setIsChecked] = useState<boolean | "indeterminate">(
+    indeterminate ? "indeterminate" : checked,
+  );
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (ref.current) {
-      ref.current.indeterminate = indeterminate;
+    if (inputRef.current) {
+      if (isChecked === indeterminate) {
+        inputRef.current.indeterminate = true;
+      } else {
+        inputRef.current.indeterminate = false;
+      }
     }
-  }, [indeterminate]);
+  }, [isChecked]);
+
+  const gotClicked = () => {
+    if (isChecked === false) {
+      setIsChecked(true);
+      if (onChange) onChange(true);
+    } else if (isChecked === true) {
+      setIsChecked("indeterminate");
+      if (onChange) onChange(false);
+    } else if (isChecked === "indeterminate") {
+      setIsChecked(false);
+      if (onChange) onChange(false);
+    }
+  };
 
   return (
-    <div className={styles.box}>
+    <div>
       <input
         type="checkbox"
-        ref={ref}
-        checked={checked}
-        onChange={onChange}
-        className={styles.check}
+        ref={inputRef}
+        checked={isChecked === true}
+        onClick={gotClicked}
+        onChange={() => {}}
+        className={styles.box}
       ></input>
-      <span
+      <label
+        className={classNames(
+          styles.icon,
+          styles[size],
+          styles[color],
+          isChecked === "indeterminate" && styles.indeterminate,
+        )}
+        onClick={gotClicked}
+      ></label>
+      {/* <span
         className={classNames(styles.icon, styles[size], styles[color])}
       ></span>
-      <span className={styles.label}>{label}</span>
+      <span className={styles.label}>{label}</span> */}
     </div>
   );
 };
