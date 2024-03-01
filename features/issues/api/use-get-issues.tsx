@@ -33,7 +33,7 @@ export function useGetIssues(
   const query = useQuery<Page<Issue>, Error>(
     getQueryKey(page, status, level),
     ({ signal }) => getFiltered(page, status, level, { signal }),
-    { keepPreviousData: true },
+    { keepPreviousData: false },
   );
   // Prefetch the next page!
   const queryClient = useQueryClient();

@@ -14,9 +14,25 @@ describe("Issue List", () => {
     cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=2", {
       fixture: "issues-page-2.json",
     }).as("getIssuesPage2");
+
     cy.intercept("GET", "https://prolog-api.profy.dev/issue?page=3", {
       fixture: "issues-page-3.json",
     }).as("getIssuesPage3");
+    // ==== added custom intercept url for requests made by app...
+    cy.intercept(
+      "GET",
+      "https://prolog-api.profy.dev/issue?page=2&status=&level=",
+      {
+        fixture: "issues-page-2.json",
+      },
+    ).as("getFix2");
+    cy.intercept(
+      "GET",
+      "https://prolog-api.profy.dev/issue?page=3&status=&level=",
+      {
+        fixture: "issues-page-3.json",
+      },
+    ).as("getFix3");
 
     // open issues page
     cy.visit(`http://localhost:3000/dashboard/issues`);
@@ -56,12 +72,14 @@ describe("Issue List", () => {
 
       // test navigation to second page
       cy.get("@next-button").click();
+      cy.wait(["@getFix2"]);
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
       cy.get("tbody tr:first").contains(mockIssues2.items[0].message);
 
       // test navigation to third and last page
       cy.get("@next-button").click();
+      cy.wait(["@getFix3"]);
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 3 of 3");
       cy.get("tbody tr:first").contains(mockIssues3.items[0].message);
@@ -75,8 +93,8 @@ describe("Issue List", () => {
 
     it("persists page after reload", () => {
       cy.get("@next-button").click();
+      cy.wait(["@getFix2"]);
       cy.contains("Page 2 of 3");
-
       cy.reload();
       cy.wait(["@getProjects", "@getIssuesPage2"]);
       cy.wait(1500);

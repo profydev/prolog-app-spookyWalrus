@@ -82,7 +82,6 @@ export function IssueList() {
   );
 
   const { items, meta } = issuesPage.data || {};
-  // console.log("meta data: ", meta);
   // if total page of previous search is less than new search params, go to page 1
   if (meta.totalPages < meta.currentPage) {
     navigateToPage(1);
