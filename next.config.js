@@ -1,3 +1,4 @@
+// const path = require("path");
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
@@ -5,6 +6,9 @@ const nextConfig = {
   images: {
     domains: ["prolog-api.profy.dev"],
   },
+  // sassOptions: {
+  //   includePaths: [path.join(__dirname, "styles")],
+  // },
 };
 
 module.exports = nextConfig;

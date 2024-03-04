@@ -10,12 +10,21 @@
   padding: space.$s4 space.$s6;
   color: color.$gray-500;
   font: font.$text-sm-regular;
+
+  @media screen and (width <= 413) {
+    grid-column: span 1;
+  }
 }
 
 .issueCell {
   composes: cell;
   display: flex;
   align-items: center;
+
+  @media screen and (width <= 413) {
+    // colspan: 3;
+    grid-column: span 1;
+  }
 }
 
 .languageIcon {

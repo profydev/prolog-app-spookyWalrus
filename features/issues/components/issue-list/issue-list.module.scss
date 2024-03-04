@@ -1,6 +1,7 @@
 @use "@styles/color";
 @use "@styles/space";
 @use "@styles/font";
+@use "@styles/breakpoint";
 
 .section {
   display: flex;
@@ -36,23 +37,32 @@
 
 .filterContainer {
   display: flex;
-  height: 44px;
+  height: auto;
+  flex-direction: row;
   justify-content: flex-end;
-
-  // align-items: center;
   gap: 16px;
   flex: 1 0 0;
+  width: 100%;
+  background-color: blue;
+
+  @media screen and (width <= 413px) {
+    flex-direction: column;
+    width: 351px;
+    background-color: green;
+  }
 }
 
 .dropdownContainer {
-  // position: relative;
-  // bottom: 50%;
   width: 160px;
   height: auto;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
   flex-shrink: 0;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
 }
 
 .dropdown {
@@ -73,6 +83,10 @@
   width: 280px;
   flex-direction: column;
   align-items: flex-start;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
 }
 
 .inputField {
@@ -102,10 +116,19 @@
 .table {
   width: 100%;
   border-collapse: collapse;
+
+  @media screen and (width <= 413px) {
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr 1fr 5fr;
+  }
 }
 
 .headerRow {
   border-bottom: 1px solid color.$gray-200;
+
+  @media screen and (width <= 413px) {
+    display: none;
+  }
 }
 
 .headerCell {

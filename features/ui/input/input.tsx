@@ -37,7 +37,7 @@ const Input = ({
   value,
 }: inputProps) => {
   return (
-    <label>
+    <label className={styles.inputLabel}>
       <div className={styles.label}>{inputLabel}</div>
       <div className={styles.inputContainer}>
         {isIcon && (
