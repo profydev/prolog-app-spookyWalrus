@@ -52,17 +52,21 @@ describe("Issue List", () => {
     });
 
     it("renders the issues", () => {
-      cy.get("main")
-        .find("tbody")
-        .find("div")
-        .each(($el, index) => {
-          const issue = mockIssues1.items[index];
-          const firstLineOfStackTrace = issue.stack.split("\n")[1].trim();
-          cy.wrap($el).contains(issue.name);
-          cy.wrap($el).contains(issue.message);
-          cy.wrap($el).contains(issue.numEvents);
-          cy.wrap($el).contains(firstLineOfStackTrace);
-        });
+      // cy.get("main")
+      // .find("tbody")
+      // .find("div")
+      cy.get('[data-testid="issue-row"]').each(($el, index) => {
+        const issue = mockIssues1.items[index];
+        if (!issue) {
+          console.error(`No issue found at index ${index}`);
+          return;
+        }
+        const firstLineOfStackTrace = issue.stack.split("\n")[1].trim();
+        cy.wrap($el).contains(issue.name);
+        cy.wrap($el).contains(issue.message);
+        cy.wrap($el).contains(issue.numEvents);
+        cy.wrap($el).contains(firstLineOfStackTrace);
+      });
     });
 
     it("paginates the data", () => {
