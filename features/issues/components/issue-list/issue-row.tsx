@@ -22,7 +22,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
   const { name, message, stack, level, numEvents, numUsers } = issue;
   const firstLineOfStackTrace = stack.split("\n")[1];
   return (
-    <div className={styles.row}>
+    <div className={styles.row} data-testid="issue-row">
       <div className={styles.issueCell}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -55,6 +55,9 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
         </div>
       </div>
       <Image src={Chart} alt="chart" className={styles.lastCell} />
+      {/* <div className={styles.chartContainer}> */}
+      {/* <div className={styles.chart}></div> */}
+      {/* </div> */}
     </div>
   );
 }
