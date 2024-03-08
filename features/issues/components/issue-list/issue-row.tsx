@@ -4,6 +4,8 @@ import { ProjectLanguage } from "@api/projects.types";
 import { IssueLevel } from "@api/issues.types";
 import type { Issue } from "@api/issues.types";
 import styles from "./issue-row.module.scss";
+import Image from "next/image";
+import Chart from "../../icons/barChart.png";
 
 type IssueRowProps = {
   projectLanguage: ProjectLanguage;
@@ -20,8 +22,8 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
   const { name, message, stack, level, numEvents, numUsers } = issue;
   const firstLineOfStackTrace = stack.split("\n")[1];
   return (
-    <tr className={styles.row}>
-      <td className={styles.issueCell}>
+    <div className={styles.row}>
+      <div className={styles.issueCell}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={styles.languageIcon}
@@ -33,16 +35,26 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
             <span className={styles.errorType}>{name}:&nbsp;</span>
             {message}
           </div>
-          <div>{firstLineOfStackTrace}</div>
+          <div className={styles.stackTraceText}>{firstLineOfStackTrace}</div>
         </div>
-      </td>
-      <td className={styles.cell}>
-        <Badge color={levelColors[level]} size={BadgeSize.sm}>
-          {capitalize(level)}
-        </Badge>
-      </td>
-      <td className={styles.cell}>{numEvents}</td>
-      <td className={styles.cell}>{numUsers}</td>
-    </tr>
+      </div>
+      <div className={styles.middleCells}>
+        <div className={styles.cell}>
+          <div className={styles.cellLabel}>Status</div>
+          <Badge color={levelColors[level]} size={BadgeSize.sm}>
+            {capitalize(level)}
+          </Badge>
+        </div>
+        <div className={styles.cell}>
+          <div className={styles.cellLabel}>Events</div>
+          {numEvents}
+        </div>
+        <div className={styles.cell}>
+          <div className={styles.cellLabel}>Users</div>
+          {numUsers}
+        </div>
+      </div>
+      <Image src={Chart} alt="chart" className={styles.lastCell} />
+    </div>
   );
 }

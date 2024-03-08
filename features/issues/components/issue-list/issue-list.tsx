@@ -244,28 +244,22 @@ export function IssueList() {
       </div>
       {items.length > 1 ? (
         <div className={styles.tableContainer}>
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.headerRow}>
-                <th className={styles.headerCell}>
-                  {/* <Checkbox /> */}
-                  Issue
-                </th>
-                <th className={styles.headerCell}>Level</th>
-                <th className={styles.headerCell}>Events</th>
-                <th className={styles.headerCell}>Users</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(items || []).map((issue) => (
-                <IssueRow
-                  key={issue.id}
-                  issue={issue}
-                  projectLanguage={projectIdToLanguage[issue.projectId]}
-                />
-              ))}
-            </tbody>
-          </table>
+          <div className={styles.table}>
+            <div className={styles.headerRow}>
+              <div className={styles.headerCell}>Issue</div>
+              <div className={styles.headerCell}>Graph: 14d</div>
+              <div className={styles.headerCell}>Level</div>
+              <div className={styles.headerCell}>Events</div>
+              <div className={styles.headerCell}>Users</div>
+            </div>
+            {(items || []).map((issue) => (
+              <IssueRow
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </div>
           <div className={styles.paginationContainer}>
             <div>
               <button

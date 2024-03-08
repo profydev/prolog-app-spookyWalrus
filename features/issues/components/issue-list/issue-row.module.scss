@@ -2,29 +2,89 @@
 @use "@styles/space";
 @use "@styles/font";
 
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  padding: 4%;
+  border: solid 1px #d2caca;
+  border-radius: 14px;
+  margin-bottom: 3%;
+
+  @media (width >= 413px) {
+    display: grid;
+    grid-template-columns: 5fr 3fr 1fr 1fr 1fr;
+    border: none;
+    margin-bottom: none;
+    padding: 2%;
+  }
+}
+
 .row:nth-child(2n) {
   background: color.$gray-50;
+}
+
+.middleCells {
+  display: flex;
+  justify-content: space-between;
+
+  @media (width >= 413px) {
+    display: contents;
+  }
+}
+
+.cellLabel {
+  font-family: Inter, sans-serif;
+  font-size: 1em;
+  margin-bottom: 25%;
+
+  @media (width >= 413px) {
+    display: none;
+  }
 }
 
 .cell {
   padding: space.$s4 space.$s6;
   color: color.$gray-500;
   font: font.$text-sm-regular;
+  width: 33.33%;
+  display: inline-block;
 
-  @media screen and (width <= 413) {
-    grid-column: span 1;
+  @media (width >= 413px) {
+    padding: space.$s4 0;
+    width: auto;
+    display: block;
   }
 }
 
 .issueCell {
-  composes: cell;
   display: flex;
-  align-items: center;
+  flex: 3;
 
-  @media screen and (width <= 413) {
-    // colspan: 3;
-    grid-column: span 1;
+  @media (width >= 413px) {
+    order: -2;
   }
+}
+
+.lastCell {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  @media (width >= 413px) {
+    display: flex;
+    order: -1;
+    padding-top: 1%;
+    justify-content: center;
+    width: auto;
+    height: auto;
+  }
+}
+
+.stackTraceText {
+  font-size: 0.9em;
+  font-family: Inter, sans-serif;
+  color: #a4a0a0;
 }
 
 .languageIcon {

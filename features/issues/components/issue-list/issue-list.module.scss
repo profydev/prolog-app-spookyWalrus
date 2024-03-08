@@ -23,8 +23,6 @@
   height: 1px;
   align-items: flex-start;
   gap: 16px;
-
-  // flex: 1 0 0;
 }
 
 .resolveButton {
@@ -43,12 +41,10 @@
   gap: 16px;
   flex: 1 0 0;
   width: 100%;
-  background-color: blue;
 
   @media screen and (width <= 413px) {
     flex-direction: column;
     width: 351px;
-    background-color: green;
   }
 }
 
@@ -103,36 +99,42 @@
 
 .tableContainer {
   background: white;
-  border: 1px solid color.$gray-200;
   box-sizing: border-box;
-  box-shadow:
-    0 4px 8px -2px rgb(16 24 40 / 10%),
-    0 2px 4px -2px rgb(16 24 40 / 6%);
-  border-radius: space.$s2;
   overflow: hidden;
   align-self: stretch;
+
+  @media (width >= 413px) {
+    background: white;
+    border: 1px solid color.$gray-200;
+    box-sizing: border-box;
+    box-shadow:
+      0 4px 8px -2px rgb(16 24 40 / 10%),
+      0 2px 4px -2px rgb(16 24 40 / 6%);
+    border-radius: space.$s2;
+    overflow: hidden;
+    align-self: stretch;
+  }
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-
-  @media screen and (width <= 413px) {
-    display: grid;
-    grid-template-columns: 5fr 1fr 1fr 1fr 5fr;
-  }
 }
 
 .headerRow {
   border-bottom: 1px solid color.$gray-200;
+  padding: space.$s3 space.$s3;
+  padding: 2%;
+  display: none;
 
-  @media screen and (width <= 413px) {
-    display: none;
+  @media (width >= 413px) {
+    border-bottom: 1px solid color.$gray-200;
+    display: grid;
+    grid-template-columns: 5fr 3fr 1fr 1fr 1fr;
   }
 }
 
 .headerCell {
-  padding: space.$s3 space.$s6;
   text-align: left;
   color: color.$gray-500;
   font: font.$text-xs-medium;
