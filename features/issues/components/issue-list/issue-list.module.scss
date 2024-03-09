@@ -1,6 +1,7 @@
 @use "@styles/color";
 @use "@styles/space";
 @use "@styles/font";
+@use "@styles/breakpoint";
 
 .section {
   display: flex;
@@ -22,8 +23,6 @@
   height: 1px;
   align-items: flex-start;
   gap: 16px;
-
-  // flex: 1 0 0;
 }
 
 .resolveButton {
@@ -36,23 +35,30 @@
 
 .filterContainer {
   display: flex;
-  height: 44px;
+  height: auto;
+  flex-direction: row;
   justify-content: flex-end;
-
-  // align-items: center;
   gap: 16px;
   flex: 1 0 0;
+  width: 100%;
+
+  @media screen and (width <= 413px) {
+    flex-direction: column;
+    width: 351px;
+  }
 }
 
 .dropdownContainer {
-  // position: relative;
-  // bottom: 50%;
   width: 160px;
   height: auto;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
   flex-shrink: 0;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
 }
 
 .dropdown {
@@ -73,6 +79,10 @@
   width: 280px;
   flex-direction: column;
   align-items: flex-start;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
 }
 
 .inputField {
@@ -89,14 +99,21 @@
 
 .tableContainer {
   background: white;
-  border: 1px solid color.$gray-200;
   box-sizing: border-box;
-  box-shadow:
-    0 4px 8px -2px rgb(16 24 40 / 10%),
-    0 2px 4px -2px rgb(16 24 40 / 6%);
-  border-radius: space.$s2;
   overflow: hidden;
   align-self: stretch;
+
+  @media (width >= 413px) {
+    background: white;
+    border: 1px solid color.$gray-200;
+    box-sizing: border-box;
+    box-shadow:
+      0 4px 8px -2px rgb(16 24 40 / 10%),
+      0 2px 4px -2px rgb(16 24 40 / 6%);
+    border-radius: space.$s2;
+    overflow: hidden;
+    align-self: stretch;
+  }
 }
 
 .table {
@@ -106,10 +123,18 @@
 
 .headerRow {
   border-bottom: 1px solid color.$gray-200;
+  padding: space.$s3 space.$s3;
+  padding: 2%;
+  display: none;
+
+  @media (width >= 413px) {
+    border-bottom: 1px solid color.$gray-200;
+    display: grid;
+    grid-template-columns: 5fr 3fr 1fr 1fr 1fr;
+  }
 }
 
 .headerCell {
-  padding: space.$s3 space.$s6;
   text-align: left;
   color: color.$gray-500;
   font: font.$text-xs-medium;

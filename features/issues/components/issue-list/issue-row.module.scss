@@ -2,20 +2,131 @@
 @use "@styles/space";
 @use "@styles/font";
 
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  padding: 4%;
+  border: solid 1px #d2caca;
+  border-radius: 14px;
+  margin-bottom: 3%;
+
+  @media (width >= 413px) {
+    display: grid;
+    grid-template-columns: 5fr 3fr 1fr 1fr 1fr;
+    border: none;
+    padding: 2%;
+    margin-bottom: 0%;
+  }
+}
+
 .row:nth-child(2n) {
   background: color.$gray-50;
+}
+
+.middleCells {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (width >= 413px) {
+    display: contents;
+    justify-content: space-between;
+  }
+}
+
+.cellLabel {
+  font-family: Inter, sans-serif;
+  font-size: 1em;
+  margin-bottom: 25%;
+
+  @media (width >= 413px) {
+    display: none;
+  }
 }
 
 .cell {
   padding: space.$s4 space.$s6;
   color: color.$gray-500;
   font: font.$text-sm-regular;
+  width: 33.33%;
+  display: inline-block;
+
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  text-align: center;
+
+  @media (width >= 413px) {
+    padding: space.$s4 0;
+    width: auto;
+    display: block;
+    text-align: left;
+  }
+}
+
+.badge {
+  margin-left: 0;
+
+  @media (width <= 413px) {
+    margin-left: 15%;
+  }
 }
 
 .issueCell {
-  composes: cell;
   display: flex;
+  flex: 3;
+
+  @media (width >= 413px) {
+    order: -2;
+  }
+}
+
+.lastCell {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+
+  @media (width >= 413px) {
+    display: flex;
+    order: -1;
+  }
+}
+
+.chartContainer {
+  display: flex;
+  height: 72px;
+  justify-content: center;
+
+  @media (width >= 413px) {
+    // padding: 16px 4px;
+  }
+}
+
+.chart {
+  display: flex;
+
+  // height: 40px;
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.chartBar {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
+  margin-right: 2px;
+}
+
+.stackTraceText {
+  font-size: 0.9em;
+  font-family: Inter, sans-serif;
+  color: #a4a0a0;
 }
 
 .languageIcon {

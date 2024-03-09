@@ -82,7 +82,7 @@ const Select = ({
   }, [value]);
 
   return (
-    <div>
+    <div className={styles.outerSelect}>
       <div className={styles.outerLabel}>{label}</div>
       <div className={styles.menuBox}>
         <Listbox
@@ -98,25 +98,27 @@ const Select = ({
             </div>
             <Image src={ChevDown} alt={ChevDown} className={styles.menuChev} />
           </Listbox.Button>
-          <Listbox.Options className={styles.menu}>
-            {menuList.map((data) => (
-              <Listbox.Option key={data.id} value={data.value} as={Fragment}>
-                {({ active, selected }) => (
-                  <li
-                    className={`${styles.listItems} ${
-                      active ? styles.listActive : ""
-                    }`}
-                  >
-                    <div className={styles.listDiv}>
-                      {isIcon && <Image src={UserIcon} alt={UserIcon} />}
-                      {data.item}
-                    </div>
-                    {selected && <Image src={CheckIcon} alt={CheckIcon} />}
-                  </li>
-                )}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
+          <span className={styles.metaMenu}>
+            <Listbox.Options className={styles.menu}>
+              {menuList.map((data) => (
+                <Listbox.Option key={data.id} value={data.value} as={Fragment}>
+                  {({ active, selected }) => (
+                    <li
+                      className={`${styles.listItems} ${
+                        active ? styles.listActive : ""
+                      }`}
+                    >
+                      <div className={styles.listDiv}>
+                        {isIcon && <Image src={UserIcon} alt={UserIcon} />}
+                        {data.item}
+                      </div>
+                      {selected && <Image src={CheckIcon} alt={CheckIcon} />}
+                    </li>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </span>
         </Listbox>
         <span className={isError ? styles.hideHint : styles.hint}>{hint}</span>
         <span className={isError ? styles.error : styles.hideError}>

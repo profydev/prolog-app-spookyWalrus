@@ -2,6 +2,14 @@
 @use "@styles/font";
 @use "@styles/space";
 
+.inputLabel {
+  width: 280px;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
+}
+
 .inputContainer {
   // position: relative;
   display: flex;
@@ -90,7 +98,8 @@ input.theInput:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.7;
+
+  // opacity: 0.7;
 }
 
 .alertIcon {

@@ -2,6 +2,10 @@
 @use "@styles/font";
 @use "@styles/space";
 
+.outerSelect {
+  width: 100%;
+}
+
 .outerLabel {
   display: block;
   align-self: stretch;
@@ -19,6 +23,10 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  @media screen and (width <= 413px) {
+    gap: 0;
+  }
 }
 
 .menuButton {
@@ -39,6 +47,10 @@
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
+
+  @media screen and (width <= 413px) {
+    width: 100%;
+  }
 
   &.disabled {
     border: 1px solid var(--gray-300, #d0d5dd);
@@ -116,6 +128,10 @@
   transform: rotate(180deg);
 }
 
+.metaMenu {
+  position: relative;
+}
+
 .menu {
   display: block;
   width: 320px;
@@ -128,6 +144,16 @@
     0 4px 6px -2px rgb(16 24 40 / 5%),
     0 12px 16px -4px rgb(16 24 40 / 10%);
   z-index: 1;
+  position: absolute;
+
+  // top: 30px;
+  @media screen and (width <= 413px) {
+    width: 100%;
+    margin-top: 0%;
+
+    // position: absolute;
+    // top: 27%;
+  }
 }
 
 .listDiv,
