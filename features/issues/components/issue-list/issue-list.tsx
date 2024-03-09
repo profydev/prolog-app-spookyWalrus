@@ -252,15 +252,17 @@ export function IssueList() {
               <div className={styles.headerCell}>Events</div>
               <div className={styles.headerCell}>Users</div>
             </div>
-            <div>
-              {(items || []).map((issue) => (
-                <IssueRow
-                  key={issue.id}
-                  issue={issue}
-                  projectLanguage={projectIdToLanguage[issue.projectId]}
-                />
-              ))}
-            </div>
+            <tbody>
+              <div>
+                {(items || []).map((issue) => (
+                  <IssueRow
+                    key={issue.id}
+                    issue={issue}
+                    projectLanguage={projectIdToLanguage[issue.projectId]}
+                  />
+                ))}
+              </div>
+            </tbody>
           </div>
           <div className={styles.paginationContainer}>
             <div>
