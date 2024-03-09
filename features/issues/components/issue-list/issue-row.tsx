@@ -4,8 +4,7 @@ import { ProjectLanguage } from "@api/projects.types";
 import { IssueLevel } from "@api/issues.types";
 import type { Issue } from "@api/issues.types";
 import styles from "./issue-row.module.scss";
-import Image from "next/image";
-import Chart from "../../icons/barChart.png";
+import Chart from "./rowChart";
 
 type IssueRowProps = {
   projectLanguage: ProjectLanguage;
@@ -41,9 +40,11 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
       <div className={styles.middleCells}>
         <div className={styles.cell}>
           <div className={styles.cellLabel}>Status</div>
-          <Badge color={levelColors[level]} size={BadgeSize.sm}>
-            {capitalize(level)}
-          </Badge>
+          <div className={styles.badge}>
+            <Badge color={levelColors[level]} size={BadgeSize.sm}>
+              {capitalize(level)}
+            </Badge>
+          </div>
         </div>
         <div className={styles.cell}>
           <div className={styles.cellLabel}>Events</div>
@@ -54,10 +55,9 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
           {numUsers}
         </div>
       </div>
-      <Image src={Chart} alt="chart" className={styles.lastCell} />
-      {/* <div className={styles.chartContainer}> */}
-      {/* <div className={styles.chart}></div> */}
-      {/* </div> */}
+      <div className={styles.lastCell}>
+        <Chart />
+      </div>
     </div>
   );
 }
