@@ -19,7 +19,8 @@ export function IssueList() {
   const page = Number(router.query.page || 1);
   const stat = router.query.status;
   const lev = router.query.level;
-  const proj = router.query.project;
+  const text = router.query.text;
+  const projectId = router.query.id;
   const [statusVal, setStatusVal] = useState<boolean | string | string[]>(
     stat || "",
   );
@@ -52,11 +53,18 @@ export function IssueList() {
         page: newPage,
         status: stat,
         level: lev,
-        project: proj,
+        text: text,
       },
     });
   };
-  const issuesPage = useGetIssues(page, stat, lev, proj);
+
+  const { refetch, ...issuesPage } = useGetIssues(
+    page,
+    stat,
+    lev,
+    text,
+    projectId,
+  );
   const projects = useGetProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -89,6 +97,7 @@ export function IssueList() {
 
   // ================  parse & set filter values, set to URL ==========================
   function setURL(menuVal: string) {
+    // dropdown menu
     let resParam = router.query.status;
     let levParam = router.query.level;
 
@@ -121,8 +130,8 @@ export function IssueList() {
   }
 
   function pushPath(
-    status: string | string[] | undefined,
-    level: string | string[] | undefined,
+    status?: string | string[] | undefined,
+    level?: string | string[] | undefined,
     text?: string,
   ) {
     router.push({
@@ -131,14 +140,15 @@ export function IssueList() {
         page: page,
         status: status,
         level: level,
-        project: text,
+        text: text,
       },
     });
   }
 
   function clearMenu() {
     setClearString("");
-    pushPath(undefined, undefined, undefined); // this also clears the state values for menus
+    pushPath("", "", ""); // this also clears the state values for menus
+    refetch();
   }
   //======================  menu selection behaviour =====
   function setRes(val: string | boolean) {
@@ -252,7 +262,7 @@ export function IssueList() {
               <div className={styles.headerCell}>Events</div>
               <div className={styles.headerCell}>Users</div>
             </div>
-            <tbody>
+            <div className={styles.tbody}>
               <div>
                 {(items || []).map((issue) => (
                   <IssueRow
@@ -262,7 +272,7 @@ export function IssueList() {
                   />
                 ))}
               </div>
-            </tbody>
+            </div>
           </div>
           <div className={styles.paginationContainer}>
             <div>
