@@ -22,8 +22,7 @@ describe("Project List", () => {
     it("renders the projects", () => {
       const languageNames = ["React", "Node.js", "Python"];
       // const statuses = ["Critical", "Warning", "Stable"];
-
-      function statusCg(stat) {
+      function statusCg(stat: string) {
         console.log(stat);
         switch (stat) {
           case "info":
@@ -34,6 +33,8 @@ describe("Project List", () => {
             break;
           case "warning":
             return "Warning";
+          default:
+            return "";
         }
       }
 
@@ -50,7 +51,12 @@ describe("Project List", () => {
           cy.wrap($el).contains(statusText);
           cy.wrap($el)
             .find("a")
-            .should("have.attr", "href", "/dashboard/issues");
+            // .should("have.attr", "href", "/dashboard/issues");
+            .invoke("attr", "href")
+            .should(
+              "match",
+              /\/dashboard\/issues\?page=.*&status=.*&level=.*&project=.*/,
+            );
         });
     });
   });
