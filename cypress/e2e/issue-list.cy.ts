@@ -81,6 +81,7 @@ describe("Issue List", () => {
       cy.contains("Page 2 of 3");
       cy.get(".tbody div:first").contains(mockIssues2.items[0].message);
 
+
       // test navigation to third and last page
       cy.get("@next-button").click();
       cy.wait(["@getFix3"]);
@@ -93,6 +94,7 @@ describe("Issue List", () => {
       cy.get("@next-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
       cy.get(".tbody div:first").contains(mockIssues2.items[0].message);
+
     });
 
     it("persists page after reload", () => {
