@@ -34,6 +34,11 @@ function statusGo(status: string) {
       break;
   }
 }
+function linkFilter(status: string) {
+  const link = Routes.issues;
+  const param = "?page=1&status=default&level=" + status + "&project=";
+  return link + param;
+}
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const { id, name, language, numIssues, numEvents24h, status } = project;
@@ -41,6 +46,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const link = Routes.issues + "?id=" + id;
     return link;
   }
+
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>

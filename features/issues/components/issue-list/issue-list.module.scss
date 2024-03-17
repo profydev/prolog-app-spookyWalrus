@@ -121,6 +121,10 @@
   border-collapse: collapse;
 }
 
+.tbody {
+  padding: 0;
+}
+
 .headerRow {
   border-bottom: 1px solid color.$gray-200;
   padding: space.$s3 space.$s3;
