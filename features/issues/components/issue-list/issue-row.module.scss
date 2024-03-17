@@ -103,21 +103,18 @@
 .chart {
   display: flex;
   height: 100%;
-  width: 100%;
+  justify-content: space-between;
   align-items: flex-end;
+  flex-shrink: 0;
 }
 
 .chartBar {
   display: flex;
-  width: 10px;
+  height: 100%;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
   margin-right: 2px;
-
-  @media (width <= 413px) {
-    width: 17px;
-  }
 }
 
 .stackTraceText {

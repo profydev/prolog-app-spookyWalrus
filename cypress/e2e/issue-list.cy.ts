@@ -52,9 +52,6 @@ describe("Issue List", () => {
     });
 
     it("renders the issues", () => {
-      // cy.get("main")
-      // .find("tbody")
-      // .find("div")
       cy.get('[data-testid="issue-row"]').each(($el, index) => {
         const issue = mockIssues1.items[index];
         if (!issue) {
@@ -79,20 +76,26 @@ describe("Issue List", () => {
       cy.wait(["@getFix2"]);
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody div:first").contains(mockIssues2.items[0].message);
+      cy.get("[data-testid='issue-row']").contains(
+        mockIssues2.items[0].message,
+      );
 
       // test navigation to third and last page
       cy.get("@next-button").click();
       cy.wait(["@getFix3"]);
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 3 of 3");
-      cy.get("tbody div:first").contains(mockIssues3.items[0].message);
+      cy.get("[data-testid='issue-row']").contains(
+        mockIssues3.items[0].message,
+      );
 
       // test navigation back to second page
       cy.get("@prev-button").click();
       cy.get("@next-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody div:first").contains(mockIssues2.items[0].message);
+      cy.get("[data-testid='issue-row']").contains(
+        mockIssues2.items[0].message,
+      );
     });
 
     it("persists page after reload", () => {

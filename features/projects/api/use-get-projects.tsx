@@ -4,7 +4,6 @@ import type { Project } from "@api/projects.types";
 
 export function useGetProjects() {
   const queryInfo = useQuery<Project[], Error>(["projects"], getProjects);
-
   const refetchProjects = async () => {
     await queryInfo.refetch();
   };
