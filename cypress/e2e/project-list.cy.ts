@@ -51,12 +51,12 @@ describe("Project List", () => {
           cy.wrap($el).contains(statusText);
           cy.wrap($el)
             .find("a")
-            // .should("have.attr", "href", "/dashboard/issues");
+            .debug()
             .invoke("attr", "href")
-            .should(
-              "match",
-              /\/dashboard\/issues\?page=.*&status=.*&level=.*&project=.*/,
-            );
+            .then((href) => {
+              expect(href).to.match(/\/dashboard\/issues\?id=.*/);
+            });
+          // .should("match", /\/dashboard\/issues\?id=.*/);
         });
     });
   });
