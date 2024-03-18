@@ -41,6 +41,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const link = Routes.issues + "?id=" + id;
     return link;
   }
+
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
